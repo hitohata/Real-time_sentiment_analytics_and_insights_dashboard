@@ -4,14 +4,14 @@
 
 ```bash
 .
-|--- lambdas
-|   |--- dashboardFunction
-|   |--- statementFunction
-|   |--- analyzeFunction
+|-- lambdas
+|   |-- dashboardFunction
+|   |-- statementFunction
+|   |-- analyzeFunction
 |
-|--- cdk
-|--- front
-|--- feedbackIngestionSimulator
+|-- cdk
+|-- front
+|-- feedbackIngestionSimulator
 ```
 
 * **lambdas**: Contains the Lambda functions for the backend.
@@ -61,9 +61,9 @@ The suggestions engine extracts the most recent 50–100 feedback entries and ge
 
 #### Email Alerts/Notifications
 
-This module is called by Sentiment Analysis Pipeline via SQS with the latest timestamp of the data processed the pipeline.
-In this function reads the last 5 minutes of data from Timestream and checks if there are more than 5 negative feedback items.
-If so, it sends an alert Discord and WhatsApp.
+After the feedback is analyzed, the system aggregates the negative sentiment of feedback over a 5-minute period.
+The negative sentiment is stored in DynamoDB.
+If the negative sentiment exceeds 5, an alert is sent to the customer experience team via Discord webhook and WhatsApp.
 
 > [!NOTE]
 > The reason for avoiding email (SMS) is the deadline.
