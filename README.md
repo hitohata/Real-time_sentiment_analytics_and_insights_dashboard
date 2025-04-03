@@ -4,14 +4,14 @@
 
 ```bash
 .
-|--- lambdas
-|   |--- dashboardFunction
-|   |--- statementFunction
-|   |--- analyzeFunction
+|-- lambdas
+|   |-- dashboardFunction
+|   |-- statementFunction
+|   |-- analyzeFunction
 |
-|--- cdk
-|--- front
-|--- feedbackIngestionSimulator
+|-- cdk
+|-- front
+|-- feedbackIngestionSimulator
 ```
 
 * **lambdas**: Contains the Lambda functions for the backend.
