@@ -61,8 +61,7 @@ The suggestions engine extracts the most recent 50–100 feedback entries and ge
 
 #### Email Alerts/Notifications
 
-After the feedback is analyzed.
-The system aggregates the negative sentiment of feedback over a 5-minute period.
+After the feedback is analyzed, the system aggregates the negative sentiment of feedback over a 5-minute period.
 The negative sentiment is stored in DynamoDB.
 If the negative sentiment exceeds 5, an alert is sent to the customer experience team via Discord webhook and WhatsApp.
 
