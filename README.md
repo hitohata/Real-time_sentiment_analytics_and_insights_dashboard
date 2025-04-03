@@ -22,7 +22,7 @@
 ## Architecture overview
 
 The user of this application is a customer experience team.
-The application use case is assumed two types:
+The application supports two use cases:
 
 1. **Real-time sentiment analytics**: The dashboard provides real-time insights into customer sentiment, allowing the team to monitor feedback trends and identify potential issues.
 2. **Error statements analytics**: The dashboard provides a specific state based on the filter.
@@ -46,7 +46,7 @@ The script is run in a PC.
 #### Sentiment Analysis Pipeline
 
 The sentiment analysis pipeline is a serverless architecture that uses AWS Lambda and SQS to process feedback in real-time.
-The feedbacks form users are sent to an SQS queue, then the SQS calls the StatementFunction.
+The feedbacks from users are sent to an SQS queue, then the SQS calls the StatementFunction.
 The function calls the OpenAI API and analyze the sentiment of the feedback.
 Then the results are stored in Amazon Timestream.
 
