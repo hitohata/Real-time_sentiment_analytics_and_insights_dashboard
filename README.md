@@ -5,7 +5,7 @@
 ```bash
 .
 |--- lambdas
-|   |--- dashbordFunction
+|   |--- dashboardFunction
 |   |--- statementFunction
 |   |--- analyzeFunction
 |
@@ -53,13 +53,13 @@ Then the results are stored in Amazon Timestream.
 > [!NOTE]
 > The reason for using SQS is to enhance the usability and scalability of the system.
 > There is no guarantee of the response time from the AI; it could be longer than the connection limit of the API Gateway to a client (30 sec).
-> In addition to that, the SQS con be used to retry the failed requests.
+> In addition to that, the SQS can retry the failed requests.
 
 #### Suggestions Engine
 
 The suggestions engine extracts the most recent 50–100 feedback entries and generates actionable suggestions based on sentiment trends using ChatGPT.
 
-#### Email Alerts/Notification`s
+#### Email Alerts/Notifications
 
 This module is called by Sentiment Analysis Pipeline via SQS with the latest timestamp of the data processed the pipeline.
 In this function reads the last 5 minutes of data from Timestream and checks if there are more than 5 negative feedback items.
