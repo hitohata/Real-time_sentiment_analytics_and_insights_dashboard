@@ -1,5 +1,24 @@
 # Real-time Sentiment Analytics and Insights Dashboard
 
+## Directory structure
+
+```bash
+.
+|--- lambdas
+|   |--- dashbordFunction
+|   |--- statementFunction
+|   |--- analyzeFunction
+|
+|--- cdk
+|--- front
+|--- feedbackIngestionSimulator
+```
+
+* **lambdas**: Contains the Lambda functions for the backend.
+* **cdk**: Contains the AWS CDK code for deploying the infrastructure.
+* **front**: Contains the React frontend code.
+* **feedbackIngestionSimulator**: Contains the script for simulating feedback ingestion.
+
 ## Architecture overview
 
 The user of this application is a customer experience team.
