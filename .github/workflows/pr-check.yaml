@@ -7,3 +7,6 @@ on:
 jobs:
   format-check:
     uses: ./.github/workflows/format-check.yaml
+
+  tests:
+    uses: ./.github/workflows/tests.yaml
