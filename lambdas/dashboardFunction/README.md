@@ -5,7 +5,7 @@ This is the API layer for this application.
 ## Local development
 
 > [!NOTE]
-> To run this function locally, you need to have Node.js (>22) and npm installed on your machine.
+> To run this function locally, you need to have Node.js (v22) and npm installed on your machine.
 
 This function can run locally using the `npm run dev` command.
 
