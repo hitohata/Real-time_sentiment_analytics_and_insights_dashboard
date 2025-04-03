@@ -1,0 +1,23 @@
+name: Format check
+
+on:
+  workflow_call:
+
+jobs:
+  cdk-format:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cdk
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache-dependency-path: ./cdk/package-lock.json
+      - name: Install cdk format
+        run: npm ci
+      - name: Check format
+        run: npm run format:check

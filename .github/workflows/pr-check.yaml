@@ -1,0 +1,12 @@
+name: PR check
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  format-check:
+    uses: ./.github/workflows/format-check.yaml
+
+  tests:
+    uses: ./.github/workflows/tests.yaml
