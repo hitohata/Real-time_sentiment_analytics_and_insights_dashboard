@@ -7,8 +7,6 @@
 |-- lambdas
 |   |-- dashboardFunction
 |   |-- statementFunction
-|   |-- analyzeFunction
-|
 |-- cdk
 |-- front
 |-- feedbackIngestionSimulator
