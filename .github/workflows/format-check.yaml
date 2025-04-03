@@ -39,3 +39,21 @@ jobs:
         run: npm ci
       - name: Check format
         run: npm run format:check
+
+  dashboard-function-format:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./lambdas/dashboard-function
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache-dependency-path: ./lambdas/dashboard-function/package-lock.json
+      - name: Install cdk format
+        run: npm ci
+      - name: Check format
+        run: npm run format:check
