@@ -1,0 +1,17 @@
+{
+  "name": "dashboardfunction",
+  "version": "1.0.0",
+  "description": "the main backend function",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "hono": "^4.7.5"
+  }
+}
