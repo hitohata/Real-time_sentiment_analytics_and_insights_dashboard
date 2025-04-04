@@ -8,7 +8,7 @@ export const feedbackEndpoint = new OpenAPIHono();
 /**
  * The body schema for the feedback endpoint
  */
-export const feedbackBodySchema = z.object({
+const feedbackBodySchema = z.object({
 	timestamp: z
 		.string()
 		.datetime({
@@ -59,7 +59,7 @@ export const feedbackBodySchema = z.object({
  *
  * The input data will be sent to an SQS queue for processing.
  */
-export const route = createRoute({
+const route = createRoute({
     method: "post",
     path: '/',
     request: {
