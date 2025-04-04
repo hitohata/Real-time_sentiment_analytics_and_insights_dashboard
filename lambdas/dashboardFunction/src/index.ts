@@ -1,12 +1,6 @@
-import { Hono } from "hono";
 import { handle } from "hono/aws-lambda";
 import { serve } from "@hono/node-server";
-
-const app = new Hono();
-
-app.get("/", (c) => {
-	return c.text("Hello Hono!");
-});
+import { app } from "./app/route";
 
 // This condition checks if the code is running in an AWS Lambda environment by checking the function name
 // If it is, it uses the AWS Lambda handler
