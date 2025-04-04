@@ -98,7 +98,7 @@ const postFeedbackData = (feedback: string) => {
 };
 
 function isModeType(mode: string): mode is ModeType {
-	return ["positive", "negative", "mock"].includes(mode);
+	return ["positive", "negative", "neutral", "mock"].includes(mode);
 }
 
 /**
