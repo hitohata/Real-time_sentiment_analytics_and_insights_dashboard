@@ -17,6 +17,18 @@
 * **front**: Contains the React frontend code.
 * **feedbackIngestionSimulator**: Contains the script for simulating feedback ingestion.
 
+## Requirements
+
+### Environment
+
+* Node.js > 20
+* Docker
+
+### OpenAI API Key
+
+This project uses OpenAI's API.
+To use the OpenAI API, you need to set up an account and obtain an API key.
+
 ## Architecture overview
 
 The user of this application is a customer experience team.
