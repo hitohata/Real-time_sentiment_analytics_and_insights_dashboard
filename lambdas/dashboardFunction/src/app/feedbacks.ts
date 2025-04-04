@@ -1,4 +1,4 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
 /**
  * The feedback endpoint.
@@ -60,47 +60,50 @@ const feedbackBodySchema = z.object({
  * The input data will be sent to an SQS queue for processing.
  */
 const route = createRoute({
-    method: "post",
-    path: '/',
-    request: {
-        body: {
-            content: {
-                "application/json": {
-                    schema: feedbackBodySchema
-                }
-            }
-        }
-    },
-    responses: {
-        202: {
-            description: "Accepted",
-            content: {
-                "application/json": {
-                    schema: z.object({
-                        message: z.string()
-                    })
-                }
-            }
-        },
-        400: {
-            description: "Bad Request",
-            content: {
-                "application/json": {
-                    schema: z.object({
-                        message: z.string()
-                    })
-                }
-            }
-        }
-    }
+	method: "post",
+	path: "/",
+	request: {
+		body: {
+			content: {
+				"application/json": {
+					schema: feedbackBodySchema,
+				},
+			},
+		},
+	},
+	responses: {
+		202: {
+			description: "Accepted",
+			content: {
+				"application/json": {
+					schema: z.object({
+						message: z.string(),
+					}),
+				},
+			},
+		},
+		400: {
+			description: "Bad Request",
+			content: {
+				"application/json": {
+					schema: z.object({
+						message: z.string(),
+					}),
+				},
+			},
+		},
+	},
 });
 
 feedbackEndpoint.openapi(route, (c) => {
-    const body = c.req.valid("json");
+	const body = c.req.valid("json");
 
-    // TODO: implement
+	// TODO: implement
 
-    return c.json({
-        message: "Feedback received"
-    }, 202);
+	return c.json(
+		{
+			message: "Feedback received",
+		},
+		202,
+	);
 });
