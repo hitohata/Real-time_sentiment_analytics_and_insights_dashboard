@@ -112,5 +112,5 @@ const route = createRoute({
 analyticsSummariesEndpoint.openapi(route, (c) => {
 	const { from, to } = c.req.valid("query");
 
-	return c.json([]);
+	return c.json({ summaries: [] }, 200);
 });
