@@ -43,7 +43,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 		);
 	}
 
-	// neutral feedback
+	// negative feedback
 	if (mode === "negative") {
 		postFeedbackData(
 			negativeFeedbacks[
