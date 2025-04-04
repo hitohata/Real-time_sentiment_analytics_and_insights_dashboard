@@ -1,10 +1,10 @@
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from '@hono/zod-openapi'
-import { feedbackEndpoint } from "./feedback"
+import { feedbackEndpoint } from "./feedbacks"
 
 export const app = new OpenAPIHono()
 
-app.route('/feedback', feedbackEndpoint)
+app.route('/feedbacks', feedbackEndpoint)
 
 app.doc('/doc', {
   openapi: '3.0.0',

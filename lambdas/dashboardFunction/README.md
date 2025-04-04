@@ -14,3 +14,10 @@ To run the function locally, you need to install the dependencies first.
 ```bash
 npm run ci
 ```
+
+## API Document
+
+The schema is provided as a Swagger API style.
+To see the schema, run this project locally and open the following URL:
+
+`http://localhost:3000/docs`
