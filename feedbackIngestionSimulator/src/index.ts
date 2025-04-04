@@ -31,7 +31,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 	if (mode === "positive") {
 		postFeedbackData(
 			positiveFeedbacks[
-				Math.floor(Math.random() * positiveFeedbacks.length - 1)
+				Math.floor(Math.random() * positiveFeedbacks.length)
 			],
 		);
 	}
@@ -39,7 +39,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 	// neutral feedback
 	if (mode === "neutral") {
 		postFeedbackData(
-			neutralFeedbacks[Math.floor(Math.random() * neutralFeedbacks.length - 1)],
+			neutralFeedbacks[Math.floor(Math.random() * neutralFeedbacks.length)],
 		);
 	}
 
@@ -47,7 +47,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 	if (mode === "negative") {
 		postFeedbackData(
 			negativeFeedbacks[
-				Math.floor(Math.random() * negativeFeedbacks.length - 1)
+				Math.floor(Math.random() * negativeFeedbacks.length)
 			],
 		);
 	}
@@ -58,7 +58,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 		...negativeFeedbacks,
 		...neutralFeedbacks,
 	];
-	postFeedbackData(feedbacks[Math.floor(Math.random() * feedbacks.length - 1)]);
+	postFeedbackData(feedbacks[Math.floor(Math.random() * feedbacks.length)]);
 }
 
 /**
