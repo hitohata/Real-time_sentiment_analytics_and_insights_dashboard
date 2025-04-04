@@ -1,10 +1,10 @@
 import { v7 } from "uuid";
+import { FEEDBACK_API_URL } from "./environmentVariables";
 import {
 	negativeFeedbacks,
 	neutralFeedbacks,
 	positiveFeedbacks,
 } from "./feedbacks";
-import { FEEDBACK_API_URL } from "./environmentVariables";
 
 /**
  * this is the mode of feedback comment
@@ -13,7 +13,7 @@ import { FEEDBACK_API_URL } from "./environmentVariables";
  * negative - negative feedback
  * mock - random feedback
  */
-type ModeType =  "positive" | "negative" | "neutral" | "mock";
+type ModeType = "positive" | "negative" | "neutral" | "mock";
 
 /**
  * This function call the feedback endpoint with the feedback data.
@@ -27,24 +27,37 @@ type ModeType =  "positive" | "negative" | "neutral" | "mock";
  * @param mode - The mode of the feedback. It can be "positive", "negative", or "mock".
  */
 function callFeedbackEndpoint(mode: ModeType) {
-
 	// positive feedback
 	if (mode === "positive") {
-		postFeedbackData(positiveFeedbacks[Math.floor(Math.random() * positiveFeedbacks.length - 1)]);
+		postFeedbackData(
+			positiveFeedbacks[
+				Math.floor(Math.random() * positiveFeedbacks.length - 1)
+			],
+		);
 	}
 
 	// neutral feedback
 	if (mode === "neutral") {
-		postFeedbackData(neutralFeedbacks[Math.floor(Math.random() * neutralFeedbacks.length - 1)]);
+		postFeedbackData(
+			neutralFeedbacks[Math.floor(Math.random() * neutralFeedbacks.length - 1)],
+		);
 	}
 
 	// neutral feedback
 	if (mode === "negative") {
-		postFeedbackData(negativeFeedbacks[Math.floor(Math.random() * negativeFeedbacks.length - 1)]);
+		postFeedbackData(
+			negativeFeedbacks[
+				Math.floor(Math.random() * negativeFeedbacks.length - 1)
+			],
+		);
 	}
 
 	// random feedback "mock"
-	const feedbacks = [...positiveFeedbacks, ...negativeFeedbacks, ...neutralFeedbacks];
+	const feedbacks = [
+		...positiveFeedbacks,
+		...negativeFeedbacks,
+		...neutralFeedbacks,
+	];
 	postFeedbackData(feedbacks[Math.floor(Math.random() * feedbacks.length - 1)]);
 }
 
@@ -92,13 +105,13 @@ function isModeType(mode: string): mode is ModeType {
  * call the feedback endpoint every 2 seconds
  */
 const main = () => {
-	console.log(`Feedback Ingestion Simulator`);
-	const mode =  process.argv[2];
+	console.log("Feedback Ingestion Simulator");
+	const mode = process.argv[2];
 	if (!isModeType(mode)) throw new Error("Invalid mode");
 	console.log("mode", mode);
 
 	// call the feedback endpoint every 2 seconds
 	setInterval(() => callFeedbackEndpoint(mode), 2000);
-}
+};
 
-main()
+main();
