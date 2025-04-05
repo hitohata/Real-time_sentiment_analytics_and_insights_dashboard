@@ -114,7 +114,7 @@ export const SENTIMENT_TREND_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
  * The response schema for the sentiment trend.
  */
 export type SentimentTrendResponseSchema = {
-	sentiments: {
+	trend: {
 		title: string;
 		description: string;
 	}[];
