@@ -9,7 +9,7 @@ export type RowFeedback = {
 	/**
 	 * The feedback source
 	 */
-	feedbackSource: string;
+	feedbackSource: "web" | "email" | "app";
 	/**
 	 * The user ID. This is UUID.
 	 */

@@ -4,15 +4,13 @@
 
 ```bash
 .
-|-- lambdas
-|   |-- dashboardFunction
-|   |-- statementFunction
+|-- backend
 |-- cdk
 |-- front
 |-- feedbackIngestionSimulator
 ```
 
-* **lambdas**: Contains the Lambda functions for the backend.
+* **backend**: Contains the Lambda functions for the backend.
 * **cdk**: Contains the AWS CDK code for deploying the infrastructure.
 * **front**: Contains the React frontend code.
 * **feedbackIngestionSimulator**: Contains the script for simulating feedback ingestion.
