@@ -57,21 +57,3 @@ jobs:
         run: npm ci
       - name: Check format
         run: npm run format:check
-
-  statement-function-format:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./lambdas/statementFunction
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache-dependency-path: ./lambdas/statementFunction/package-lock.json
-      - name: Install dependencies
-        run: npm ci
-      - name: Check format
-        run: npm run format:check
