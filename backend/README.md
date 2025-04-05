@@ -46,10 +46,10 @@ To check the results, run the following command:
 > [!NOTE]
 > To run this command, you need to set an OpenAI's key to the `.env` file.
 
-### Statement Analysis
+### Sentiment Analysis
 
 ```bash
-npm run statementAnalysisTest
+npm run sentimentAnalysisTest
 ```
 
 ### Feedback Trend

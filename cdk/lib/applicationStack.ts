@@ -32,8 +32,8 @@ export class ApplicationStack extends cdk.Stack {
 		// Create the API Gateway
 		this.dashboardRestApiGateway(dashboardFunction);
 
-		// Add statement sqs queue
-		this.statementAnalysisQueue({
+		// Add sentiment sqs queue
+		this.sentimentAnalysisQueue({
 			producerFunction: dashboardFunction,
 			consumerFunction: sentimentFunction,
 		});
@@ -116,34 +116,34 @@ export class ApplicationStack extends cdk.Stack {
 	 * @param consumerFunction
 	 * @private
 	 */
-	private statementAnalysisQueue({
+	private sentimentAnalysisQueue({
 		producerFunction,
 		consumerFunction,
 	}: {
 		producerFunction: NodejsFunction;
 		consumerFunction: NodejsFunction;
 	}) {
-		const statementQueue = new sqs.Queue(this, "StatementQueue", {
-			queueName: "RealTimeStatementQueue.fifo",
+		const sentimentQueue = new sqs.Queue(this, "SentimentQueue", {
+			queueName: "RealTimeSentimentQueue.fifo",
 			visibilityTimeout: cdk.Duration.seconds(60),
 			fifo: true,
 			contentBasedDeduplication: true,
 		});
 
 		consumerFunction.addEventSource(
-			new SqsEventSource(statementQueue, {
+			new SqsEventSource(sentimentQueue, {
 				batchSize: 10,
 				reportBatchItemFailures: true,
 			}),
 		);
 
 		// Grant the producer function permissions to send messages to the SQS queue
-		statementQueue.grantConsumeMessages(consumerFunction);
+		sentimentQueue.grantConsumeMessages(consumerFunction);
 
 		// Add an environment variable to the producer function
 		producerFunction.addEnvironment(
-			"STATEMENT_QUEUE_URL",
-			statementQueue.queueUrl,
+			"SENTIMENT_QUEUE_URL",
+			sentimentQueue.queueUrl,
 		);
 	}
 
@@ -162,7 +162,7 @@ export class ApplicationStack extends cdk.Stack {
 		producerFunction: NodejsFunction;
 		consumerFunction: NodejsFunction;
 	}) {
-		const statementQueue = new sqs.Queue(this, "AlertQueue", {
+		const alertAnalysisQueue = new sqs.Queue(this, "AlertQueue", {
 			queueName: "AlertQueue.fifo",
 			visibilityTimeout: cdk.Duration.seconds(60),
 			fifo: true,
@@ -171,19 +171,19 @@ export class ApplicationStack extends cdk.Stack {
 		});
 
 		consumerFunction.addEventSource(
-			new SqsEventSource(statementQueue, {
+			new SqsEventSource(alertAnalysisQueue, {
 				batchSize: 1,
 				reportBatchItemFailures: true,
 			}),
 		);
 
 		// Grant the producer function permissions to send messages to the SQS queue
-		statementQueue.grantConsumeMessages(consumerFunction);
+		alertAnalysisQueue.grantConsumeMessages(consumerFunction);
 
 		// Add an environment variable to the producer function
 		producerFunction.addEnvironment(
 			"ALERT_ANALYTICS_QUEUE_URL",
-			statementQueue.queueUrl,
+			alertAnalysisQueue.queueUrl,
 		);
 	}
 
