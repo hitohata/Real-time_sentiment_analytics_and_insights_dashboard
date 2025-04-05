@@ -1,4 +1,4 @@
-import { z, OpenAPIHono, createRoute } from "@hono/zod-openapi";
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
 export const suggestionEndpoint = new OpenAPIHono();
 

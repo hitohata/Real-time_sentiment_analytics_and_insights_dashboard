@@ -21,13 +21,50 @@
 
 ### Environment
 
+
 * Node.js > 20
 * Docker
+* AWS CLI
 
 ### OpenAI API Key
 
 This project uses OpenAI's API.
 To use the OpenAI API, you need to set up an account and obtain an API key.
+
+### AWS
+
+* AWS account
+* AWS CLI Access Key and Secret Key
+
+To run AWS CDK, it is required to set up the AWS CLI and credentials.
+https://docs.aws.amazon.com/cdk/v2/guide/prerequisites.html#prerequisites-cli
+
+## Deploy
+
+The deployment process is done under the `/cdk` directory.
+If nothing is mentioned, the following operations are within that directory:
+
+1 . Boostrap the CDK environment.
+
+```bash
+npm run cdk bootstrap
+```
+
+2 . Deploy the CDK stack.
+
+By running the following command, the CDK stack will be deployed.
+
+```bash
+npm run cdk deploy "*"
+```
+
+The API Gateway URL and CloudFront URL will be printed in the console.
+So, take note of them.
+
+![image](./img/cdk-output-image.jpg)
+
+> [!TIP]
+> To destroy the environment, run `npm run cdk destroy "*"`.
 
 ## Architecture overview
 
@@ -71,9 +108,9 @@ The suggestions engine extracts the most recent 50–100 feedback entries and ge
 
 #### Email Alerts/Notifications
 
-After the feedback is analyzed, the system aggregates the negative sentiment of feedback over a 5-minute period.
-The negative sentiment is stored in DynamoDB.
-If the negative sentiment exceeds 5, an alert is sent to the customer experience team via Discord webhook and WhatsApp.
+After the feedback is analyzed, the latest timestream data is sent to the AlertAnalyticsQueue.
+Then, the AlertAnalysisFunction is called.
+The function retrieves 5 minutes of window data from the latest data from Timestream and checks if there are more than 5 negative sentiments.
 
 > [!NOTE]
 > The reason for avoiding email (SMS) is the deadline.
