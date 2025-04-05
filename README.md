@@ -73,9 +73,9 @@ The suggestions engine extracts the most recent 50–100 feedback entries and ge
 
 #### Email Alerts/Notifications
 
-After the feedback is analyzed, the system aggregates the negative sentiment of feedback over a 5-minute period.
-The negative sentiment is stored in DynamoDB.
-If the negative sentiment exceeds 5, an alert is sent to the customer experience team via Discord webhook and WhatsApp.
+After the feedback is analyzed, the latest timestream data is sent to the AlertAnalyticsQueue.
+Then, the AlertAnalysisFunction is called.
+The function retrieves 5 minutes of window data from the latest data from Timestream and checks if there are more than 5 negative sentiments.
 
 > [!NOTE]
 > The reason for avoiding email (SMS) is the deadline.
