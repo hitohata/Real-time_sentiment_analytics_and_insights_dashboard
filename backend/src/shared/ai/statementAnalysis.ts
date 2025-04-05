@@ -1,5 +1,5 @@
 import OpenAI from "openai/index";
-import type { FeedbackStatement, RowFeedback } from "../urils/sharedTypes";
+import type { FeedbackStatement, RowFeedback } from "src/shared/utils/sharedTypes";
 import { STATEMENT_PROMPT } from "./aiSettings/prompts";
 import {
 	STATEMENT_RESPONSE_SCHEMA,

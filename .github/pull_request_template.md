@@ -24,7 +24,7 @@
 
 ## Notes
 
-<!-- Write any note or comment. You can shared your thoughts or ideas. -->
+<!-- Write any note or comment. You can share your thoughts or ideas. -->
 <!-- Delete this section if not needed -->
 
 -
