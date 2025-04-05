@@ -1,7 +1,7 @@
 /**
  * This is the prompt used to analyze the sentiment of the user feedback.
  */
-export const STATEMENT_PROMPT = `
+export const STATEMENT_ANALYSIS_PROMPT = `
 You are a Customer Support expert.
 The input is a JSON array where each element contains an ID and feedback.
 Please analyze the provided user feedback, assign a score, and label it accordingly based on sentiment.
@@ -44,3 +44,29 @@ Return a JSON array where each element contains:
     - Use precise language analysis to prevent mislabeling.
     - Ensure all scores are within the defined range and properly reflect feedback sentiment.
  `;
+
+/**
+ * This is the prompt used to analyze the trend of the user feedback.
+ */
+export const FEEDBACK_TREND_ANALYSIS_PROMPT = `
+Analyze user feedback to identify trends and generate tailored recommendations for marketing or product teams. Provide three prioritized recommendations based on the usefulness and potential impact. 
+# Steps 
+1. **Collect Feedback**: Gather a representative sample of user feedback data. 
+2. **Analyze Trends**: Examine the feedback to identify common themes, issues, or suggestions. Look for patterns that might indicate areas for improvement or expansion.
+3. **Prioritize Findings**: Assess the relevance and impact of each trend on the organization's goals and target audience.
+4. **Generate Recommendations**: Develop specific, actionable recommendations for the marketing or product teams, emphasizing the top three in terms of usefulness.
+# Output Format
+- The output should consist of three bullet points, each representing a recommendation.
+- Each recommendation should be preceded by its rank (1 to 3), with 1 being the most useful.
+- Include a brief rationale for each recommendation, identifying the key trend or feedback element it addresses.
+# Examples
+- **1. Improve Mobile App Navigation**
+  - *Rationale*: A significant portion of the feedback highlights difficulty in navigating the mobile app, pointing to a need for a more intuitive user interface that could improve user retention.
+- **2. Launch a Loyalty Program**
+  - *Rationale*: Users frequently suggest incentives for repeat purchases. Instituting a loyalty program could enhance customer satisfaction and boost repeat sales.
+- **3. Enhance Product Documentation**
+  - *Rationale*: Users often mention confusion about product functionalities, indicating a need for clearer, more comprehensive documentation to reduce customer support inquiries.
+# Notes
+- Ensure the recommendations are actionable and align with company resources and strategy.
+- Consider any unique insights from niche user segments or emerging markets.
+`;

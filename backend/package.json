@@ -6,7 +6,9 @@
     "start": "tsx watch src/app/dashboard/index.ts",
     "format": "biome check --write ./src",
     "format:check": "biome check ./src",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "statementAnalysisTest": "tsx --env-file=.env promptTest/statementAnalysis.ts",
+    "feedbackTrendTest": "tsx --env-file=.env promptTest/feedbackTrend.ts"
   },
   "author": "",
   "license": "ISC",

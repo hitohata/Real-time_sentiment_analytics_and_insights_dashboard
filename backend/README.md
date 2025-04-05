@@ -37,3 +37,23 @@ To see the schema, run this project locally and open the following URL:
 
 [^1]: `DashboardFunction` only.
 [^2]: `StatementFunction` only.
+
+## Prompt Test
+
+There are scripts in the `prompt-test` directory to test the AI output.
+To check the results, run the following command:
+
+> [!NOTE]
+> To run this command, you need to set an OpenAI's key to the `.env` file.
+
+### Statement Analysis
+
+```bash
+npm run statementAnalysisTest
+```
+
+### Feedback Trend
+
+```bash
+npm run feedbackTrendTest
+```
