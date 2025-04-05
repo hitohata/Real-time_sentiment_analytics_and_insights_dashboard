@@ -13,7 +13,7 @@ There are two directories under the `src` directory:
 > [!NOTE]
 > To run this function locally, you need to have Node.js (v22) and npm installed on your machine.
 
-This function can run locally using the `npm run dev` command.
+This function can run locally using the `npm run start` command.
 
 To run the function locally, you need to install the dependencies first.
 
