@@ -40,11 +40,11 @@ jobs:
       - name: Check format
         run: npm run format:check
 
-  dashboard-function-format:
+  backend-format:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./lambdas/dashboardFunction
+        working-directory: ./backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache-dependency-path: ./lambdas/dashboardFunction/package-lock.json
+          cache-dependency-path: ./backend/package-lock.json
       - name: Install dependencies
         run: npm ci
       - name: Check format
