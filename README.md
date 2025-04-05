@@ -21,7 +21,15 @@
 
 ### Environment
 
-AWS CLI
+
+* Node.js > 20
+* Docker
+* AWS CLI
+
+### OpenAI API Key
+
+This project uses OpenAI's API.
+To use the OpenAI API, you need to set up an account and obtain an API key.
 
 ### AWS
 
