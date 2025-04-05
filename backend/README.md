@@ -27,3 +27,13 @@ The schema is provided as a Swagger API style.
 To see the schema, run this project locally and open the following URL:
 
 `http://localhost:3000/docs`
+
+### Environment Variables
+
+| Name                          | Description                  |
+|:------------------------------|:-----------------------------|
+| STATEMENT_QUEUE_URL[^1]       | The statement queue's URL    |
+| ALERT_ANALYTICS_QUEUE_URL[^2] | The alert analysis Queue URL |
+
+[^1]: This environment variable is for the `DashboardFunction` only.
+[^2]: This environment variable is for the `StatementFunction` only.

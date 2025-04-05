@@ -8,7 +8,7 @@ export const app = new OpenAPIHono();
 
 app.route("/feedbacks", feedbackEndpoint);
 app.route("/suggestions", suggestionEndpoint);
-app.route("/analytics-summaries", analyticsSummariesEndpoint);
+app.route("/alertAnalysis-summaries", analyticsSummariesEndpoint);
 
 app.doc("/doc", {
 	openapi: "3.0.0",

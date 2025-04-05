@@ -2,6 +2,7 @@
 import * as cdk from "aws-cdk-lib";
 import { FrontendStack } from "../lib/frontStack";
 import { DataLayerStack } from "../lib/dataLayerStack";
+import { ApplicationStack } from "../lib/applicationStack";
 
 const app = new cdk.App();
 const dataLayerStack = new DataLayerStack(
@@ -9,3 +10,6 @@ const dataLayerStack = new DataLayerStack(
 	"RealtimeStatementAnalyticsDataLayerStack",
 );
 new FrontendStack(app, "RealtimeInsightDashboardStack");
+new ApplicationStack(app, "RealtimeStatementAnalyticsApplicationStack", {
+	timestreamTable: dataLayerStack.timestreamTable,
+});
