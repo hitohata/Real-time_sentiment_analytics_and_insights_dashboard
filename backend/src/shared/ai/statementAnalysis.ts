@@ -1,10 +1,10 @@
 import OpenAI from "openai/index";
+import type { FeedbackStatement, RowFeedback } from "../urils/sharedTypes";
 import { STATEMENT_PROMPT } from "./aiSettings/prompts";
 import {
 	STATEMENT_RESPONSE_SCHEMA,
 	type StatementAnalysisResponseSchema,
 } from "./aiSettings/responseSchemas";
-import type { FeedbackStatement, RowFeedback } from "../urils/sharedTypes";
 
 const client = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY,
