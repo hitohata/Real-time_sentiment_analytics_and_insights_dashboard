@@ -31,6 +31,33 @@ AWS CLI
 To run AWS CDK, it is required to set up the AWS CLI and credentials.
 https://docs.aws.amazon.com/cdk/v2/guide/prerequisites.html#prerequisites-cli
 
+## Deploy
+
+The deployment process is done under the `/cdk` directory.
+If nothing is mentioned, the following operations are within that directory:
+
+1 . Boostrap the CDK environment.
+
+```bash
+npm run cdk bootstrap
+```
+
+2 . Deploy the CDK stack.
+
+By running the following command, the CDK stack will be deployed.
+
+```bash
+npm run cdk deploy "*"
+```
+
+The API Gateway URL and CloudFront URL will be printed in the console.
+So, take note of them.
+
+![image](./img/cdk-output-image.jpg)
+
+> [!TIP]
+> To destroy the environment, run `npm run cdk destroy "*"`.
+
 ## Architecture overview
 
 The user of this application is a customer experience team.
