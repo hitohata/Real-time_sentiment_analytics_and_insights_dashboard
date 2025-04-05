@@ -35,5 +35,5 @@ To see the schema, run this project locally and open the following URL:
 | STATEMENT_QUEUE_URL[^1]       | The statement queue's URL    |
 | ALERT_ANALYTICS_QUEUE_URL[^2] | The alert analysis Queue URL |
 
-[^1]: This environment variable is for the `DashboardFunction` only.
-[^2]: This environment variable is for the `StatementFunction` only.
+[^1]: `DashboardFunction` only.
+[^2]: `StatementFunction` only.
