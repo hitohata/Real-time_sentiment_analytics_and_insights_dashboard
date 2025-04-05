@@ -24,7 +24,6 @@ export class DataLayerStack extends cdk.Stack {
 	 * @private
 	 */
 	private timestreamDatabaseSettings() {
-
 		const timestreamDatabaseName = "RealTimeInsightsDB";
 
 		// Create a Timestream database

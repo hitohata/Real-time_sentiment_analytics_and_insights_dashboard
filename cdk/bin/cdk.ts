@@ -4,5 +4,8 @@ import { FrontendStack } from "../lib/frontStack";
 import { DataLayerStack } from "../lib/dataLayerStack";
 
 const app = new cdk.App();
-const dataLayerStack = new DataLayerStack(app, "RealtimeStatementAnalyticsDataLayerStack");
+const dataLayerStack = new DataLayerStack(
+	app,
+	"RealtimeStatementAnalyticsDataLayerStack",
+);
 new FrontendStack(app, "RealtimeInsightDashboardStack");
