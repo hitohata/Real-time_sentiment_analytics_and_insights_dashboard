@@ -17,6 +17,20 @@
 * **front**: Contains the React frontend code.
 * **feedbackIngestionSimulator**: Contains the script for simulating feedback ingestion.
 
+## Requirements
+
+### Environment
+
+AWS CLI
+
+### AWS
+
+* AWS account
+* AWS CLI Access Key and Secret Key
+
+To run AWS CDK, it is required to set up the AWS CLI and credentials.
+https://docs.aws.amazon.com/cdk/v2/guide/prerequisites.html#prerequisites-cli
+
 ## Architecture overview
 
 The user of this application is a customer experience team.
