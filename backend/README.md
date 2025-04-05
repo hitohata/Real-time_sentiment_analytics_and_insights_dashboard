@@ -1,6 +1,12 @@
-# Dashboard Function
+# Backend
 
-This is the API layer for this application.
+This is a backend project.
+This project has multiple functions that share some modules.
+
+There are two directories under the `src` directory:
+
+- `app`: This directory contains the unique application logic. Each application is the entry point of the lambda function.
+- `shared`: This directory contains the shared modules that are used by the functions.
 
 ## Local development
 

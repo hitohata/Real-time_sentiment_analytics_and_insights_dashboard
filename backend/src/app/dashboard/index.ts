@@ -1,5 +1,5 @@
-import { handle } from "hono/aws-lambda";
 import { serve } from "@hono/node-server";
+import { handle } from "hono/aws-lambda";
 import { app } from "./app/route";
 
 // This condition checks if the code is running in an AWS Lambda environment by checking the function name
