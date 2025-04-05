@@ -24,7 +24,7 @@ export class ApplicationStack extends cdk.Stack {
 		const dashboardFunction = this.dashboardFunctionSettings();
 
 		// Create the Lambda function for Statement
-		const statementFunction = this.statementFunctionSettings();
+		const sentimentFunction = this.sentimentFunctionSettings();
 
 		// Create the Lambda function for Alert Analysis
 		const alertAnalysisFunction = this.alertAnalysisFunctionSettings();
@@ -35,18 +35,18 @@ export class ApplicationStack extends cdk.Stack {
 		// Add statement sqs queue
 		this.statementAnalysisQueue({
 			producerFunction: dashboardFunction,
-			consumerFunction: statementFunction,
+			consumerFunction: sentimentFunction,
 		});
 		// Add alert sqs queue
 		this.alertAnalysisQueue({
-			producerFunction: statementFunction,
+			producerFunction: sentimentFunction,
 			consumerFunction: alertAnalysisFunction,
 		});
 
 		// Add a policy to readonly access the Timestream database
 		this.addReadTimestreamAuthority([dashboardFunction, alertAnalysisFunction]);
 		// Add a policy to write-only access the Timestream database
-		this.addWriteTimestreamAuthority(statementFunction);
+		this.addWriteTimestreamAuthority(sentimentFunction);
 	}
 
 	/**
@@ -67,7 +67,7 @@ export class ApplicationStack extends cdk.Stack {
 	 * This function creates the Lambda function for Statement
 	 * @private
 	 */
-	private statementFunctionSettings(): NodejsFunction {
+	private sentimentFunctionSettings(): NodejsFunction {
 		return new lambdaNodejs.NodejsFunction(this, "StatementFunction", {
 			functionName: "RealTimeInsightsStatementAnalysisFunction",
 			timeout: cdk.Duration.seconds(30),
@@ -75,7 +75,7 @@ export class ApplicationStack extends cdk.Stack {
 			handler: "handler",
 			entry: path.join(
 				__dirname,
-				"../../backend/src/app/aiAnalysis/index.ts",
+				"../../backend/src/app/sentimentAnalysis/index.ts",
 			),
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
 		});
