@@ -75,7 +75,7 @@ export class ApplicationStack extends cdk.Stack {
 			handler: "handler",
 			entry: path.join(
 				__dirname,
-				"../../backend/src/app/statementAnalysis/index.ts",
+				"../../backend/src/app/aiAnalysis/index.ts",
 			),
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
 		});

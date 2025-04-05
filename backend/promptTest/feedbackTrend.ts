@@ -1,4 +1,4 @@
-import { feedbackTrendAnalysis } from "src/shared/ai/statementAnalysis";
+import { feedbackTrendAnalysis } from "src/shared/ai/aiAnalysis";
 
 const dummyFeedbacks: string[] = [
   "Great service, very satisfied!",

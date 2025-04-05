@@ -1,4 +1,4 @@
-import { statementAnalysis } from "src/shared/ai/statementAnalysis"
+import { aiAnalysis } from "src/shared/ai/aiAnalysis"
 import type { RowFeedback } from "src/shared/utils/sharedTypes";
 
 const dummyFeedbacks: RowFeedback[] = [
@@ -67,8 +67,8 @@ const dummyFeedbacks: RowFeedback[] = [
 console.log("Starting statement analysis...");
 console.time("statement-analysis");
 
-// Call the statementAnalysis function with dummy feedbacks
-const result = statementAnalysis(dummyFeedbacks);
+// Call the aiAnalysis function with dummy feedbacks
+const result = aiAnalysis(dummyFeedbacks);
 
 result.then((res) => {
   console.log(res);

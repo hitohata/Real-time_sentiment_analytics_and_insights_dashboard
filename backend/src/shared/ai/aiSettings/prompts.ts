@@ -1,7 +1,7 @@
 /**
  * This is the prompt used to analyze the sentiment of the user feedback.
  */
-export const STATEMENT_ANALYSIS_PROMPT = `
+export const SENTIMENT_ANALYSIS_PROMPT = `
 You are a Customer Support expert.
 The input is a JSON array where each element contains an ID and feedback.
 Please analyze the provided user feedback, assign a score, and label it accordingly based on sentiment.
@@ -48,7 +48,7 @@ Return a JSON array where each element contains:
 /**
  * This is the prompt used to analyze the trend of the user feedback.
  */
-export const FEEDBACK_TREND_ANALYSIS_PROMPT = `
+export const SENTIMENT_TREND_ANALYSIS_PROMPT = `
 Analyze user feedback to identify trends and generate tailored recommendations for marketing or product teams. Provide three prioritized recommendations based on the usefulness and potential impact. 
 # Steps 
 1. **Collect Feedback**: Gather a representative sample of user feedback data. 

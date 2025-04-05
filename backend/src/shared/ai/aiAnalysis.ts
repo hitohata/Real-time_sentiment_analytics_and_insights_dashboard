@@ -1,20 +1,20 @@
 import OpenAI from "openai/index";
+import { OPENAI_MODEL } from "src/shared/utils/constants";
 import { OPENAI_API_KEY } from "src/shared/utils/environmentVariables";
 import type {
 	FeedbackStatement,
 	RowFeedback,
 } from "src/shared/utils/sharedTypes";
 import {
-	FEEDBACK_TREND_ANALYSIS_PROMPT,
-	STATEMENT_ANALYSIS_PROMPT,
+	SENTIMENT_ANALYSIS_PROMPT,
+	SENTIMENT_TREND_ANALYSIS_PROMPT,
 } from "./aiSettings/prompts";
 import {
-	STATEMENT_RESPONSE_SCHEMA,
-	STATEMENT_TREND_RESPONSE_SCHEMA,
-	type StatementAnalysisResponseSchema,
-	type StatementTrendResponseSchema,
+	SENTIMENT_ANALYSIS_RESPONSE_SCHEMA,
+	SENTIMENT_TREND_RESPONSE_SCHEMA,
+	type SentimentAnalysisResponseSchema,
+	type SentimentTrendResponseSchema,
 } from "./aiSettings/responseSchemas";
-import {OPENAI_MODEL} from "src/shared/utils/constants";
 
 const client = new OpenAI({
 	apiKey: OPENAI_API_KEY,
@@ -25,7 +25,7 @@ const client = new OpenAI({
  * @param feedbacks  The feedback to analyze
  * @returns The sentiment analysis of the feedback
  */
-export const statementAnalysis = async (
+export const aiAnalysis = async (
 	feedbacks: RowFeedback[],
 ): Promise<FeedbackStatement[]> => {
 	// To store the feedbacks with their corresponding user IDs
@@ -47,7 +47,7 @@ export const statementAnalysis = async (
 		input: [
 			{
 				role: "system",
-				content: STATEMENT_ANALYSIS_PROMPT,
+				content: SENTIMENT_ANALYSIS_PROMPT,
 			},
 			{
 				role: "user",
@@ -55,13 +55,13 @@ export const statementAnalysis = async (
 			},
 		],
 		text: {
-			format: STATEMENT_RESPONSE_SCHEMA,
+			format: SENTIMENT_ANALYSIS_RESPONSE_SCHEMA,
 		},
 	});
 
 	const statementsResult = JSON.parse(
 		response.output_text,
-	) as StatementAnalysisResponseSchema; // The type is endured by the schema
+	) as SentimentAnalysisResponseSchema; // The type is endured by the schema
 
 	const result: FeedbackStatement[] = [];
 
@@ -86,13 +86,13 @@ export const statementAnalysis = async (
  */
 export const feedbackTrendAnalysis = async (
 	feedbacks: string[],
-): Promise<StatementTrendResponseSchema> => {
+): Promise<SentimentTrendResponseSchema> => {
 	const response = await client.responses.create({
 		model: OPENAI_MODEL,
 		input: [
 			{
 				role: "system",
-				content: FEEDBACK_TREND_ANALYSIS_PROMPT,
+				content: SENTIMENT_TREND_ANALYSIS_PROMPT,
 			},
 			{
 				role: "user",
@@ -100,9 +100,9 @@ export const feedbackTrendAnalysis = async (
 			},
 		],
 		text: {
-			format: STATEMENT_TREND_RESPONSE_SCHEMA,
+			format: SENTIMENT_TREND_RESPONSE_SCHEMA,
 		},
 	});
 
-	return JSON.parse(response.output_text) as StatementTrendResponseSchema;
+	return JSON.parse(response.output_text) as SentimentTrendResponseSchema;
 };

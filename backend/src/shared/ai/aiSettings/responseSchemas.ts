@@ -1,7 +1,7 @@
 import type { ResponseFormatTextConfig } from "openai/resources/responses/responses";
 
 /**
- * The response format for the statement analysis.
+ * The response format for the sentiment analysis.
  * The response format is a JSON schema that defines the structure of the response.
  *
  * @Example
@@ -17,7 +17,7 @@ import type { ResponseFormatTextConfig } from "openai/resources/responses/respon
  * }
  * ```
  */
-export const STATEMENT_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
+export const SENTIMENT_ANALYSIS_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 	type: "json_schema",
 	name: "sentiment",
 	schema: {
@@ -53,10 +53,10 @@ export const STATEMENT_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 };
 
 /**
- * The response schema for the statement analysis.
+ * The response schema for the sentiment analysis.
  * This is the type of the response that is returned by the AI.
  */
-export type StatementAnalysisResponseSchema = {
+export type SentimentAnalysisResponseSchema = {
 	sentiments: {
 		userId: string;
 		label: string;
@@ -65,7 +65,7 @@ export type StatementAnalysisResponseSchema = {
 };
 
 /**
- * The response format for the feedback analysis.
+ * The response format for the sentiment trend analysis.
  * The response format is a JSON schema that defines the structure of the response.
  *
  * @Example
@@ -80,7 +80,7 @@ export type StatementAnalysisResponseSchema = {
  * }
  * ```
  */
-export const STATEMENT_TREND_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
+export const SENTIMENT_TREND_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 	type: "json_schema",
 	name: "trend",
 	schema: {
@@ -111,9 +111,9 @@ export const STATEMENT_TREND_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 };
 
 /**
- * The response schema for the statement trend.
+ * The response schema for the sentiment trend.
  */
-export type StatementTrendResponseSchema = {
+export type SentimentTrendResponseSchema = {
 	sentiments: {
 		title: string;
 		description: string;
