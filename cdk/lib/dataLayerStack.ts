@@ -7,7 +7,7 @@ import { RemovalPolicy } from "aws-cdk-lib";
 /**
  * This stack creates Timestream and DynamoDB instances.
  */
-export class StaticContentsStack extends cdk.Stack {
+export class DataLayerStack extends cdk.Stack {
 	public timestreamDatabase: timestream.CfnDatabase;
 	public timestreamTable: timestream.CfnTable;
 	public dynamoTable: dynamodb.Table;
