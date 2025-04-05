@@ -188,7 +188,7 @@ export class ApplicationStack extends cdk.Stack {
 	}
 
 	/**
-	 * THis function create a policy to access the timestream database,
+	 * This function create a policy to access the timestream database,
 	 * and attach it to the lambda function.
 	 * @param lambdaFunctions
 	 * @private
@@ -219,7 +219,7 @@ export class ApplicationStack extends cdk.Stack {
 	}
 
 	/**
-	 * THis function create a policy to access the timestream database,
+	 * This function create a policy to access the timestream database,
 	 * and attach it to the lambda function.
 	 * @private
 	 * @param lambdaFunction
