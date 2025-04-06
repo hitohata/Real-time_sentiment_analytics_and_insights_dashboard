@@ -99,7 +99,7 @@ The output should be in JSON format:
 \`\`\`json
 {
   "trend": "Users reported difficulties with navigation",
-  "actions": [
+  "suggestions": [
     {
       "action": "Improve Mobile App Navigation",
       "reason": "A significant number of users reported difficulties with navigation, suggesting a need for a more intuitive user interface to enhance user retention."

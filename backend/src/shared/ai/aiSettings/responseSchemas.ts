@@ -70,8 +70,8 @@ export type SentimentAnalysisResponseSchema = {
  * @Example
  * ```json
  * {
- * 	"title": "string",
- * 	"actions" [
+ * 	"trend": "string",
+ * 	"suggestions" [
  * 	  	{
  * 			"action": "string",
  * 			"reason": "string"
@@ -90,7 +90,7 @@ export const SUGGESTIONS_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 				type: "string",
 				description: "current trend of the feedback",
 			},
-			actions: {
+			suggestions: {
 				type: "array",
 				items: {
 					type: "object",
@@ -110,7 +110,7 @@ export const SUGGESTIONS_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 			},
 		},
 		additionalProperties: false,
-		required: ["trend", "actions"],
+		required: ["trend", "suggestions"],
 	},
 };
 
@@ -119,8 +119,8 @@ export const SUGGESTIONS_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
  */
 export type SuggestionsResponseSchema = {
 	trend: string;
-	actions: {
-		title: string;
-		description: string;
+	suggestions: {
+		action: string;
+		reason: string;
 	}[];
 };

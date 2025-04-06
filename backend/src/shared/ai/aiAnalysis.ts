@@ -143,19 +143,19 @@ export class AIAnalysisMock implements IAIAnalysis {
 	): Promise<SuggestionsResponseSchema> {
 		const dummyData1: SuggestionsResponseSchema = {
 			trend: "Increase in Positive Feedback",
-			actions: [
+			suggestions: [
 				{
-					title: "Enhance New Features",
-					description:
+					action: "Enhance New Features",
+					reason:
 						"Continue to improve and add new features that users love.",
 				},
 				{
-					title: "Promote Positive Reviews",
-					description: "Highlight positive feedback in marketing materials.",
+					action: "Promote Positive Reviews",
+					reason: "Highlight positive feedback in marketing materials.",
 				},
 				{
-					title: "Reward Loyal Customers",
-					description:
+					action: "Reward Loyal Customers",
+					reason:
 						"Implement a loyalty program to reward satisfied customers.",
 				},
 			],
@@ -163,38 +163,38 @@ export class AIAnalysisMock implements IAIAnalysis {
 
 		const dummyData2: SuggestionsResponseSchema = {
 			trend: "Decrease in Negative Feedback",
-			actions: [
+			suggestions: [
 				{
-					title: "Improve Customer Support",
-					description:
+					action: "Improve Customer Support",
+					reason:
 						"Enhance the customer support experience to address issues faster.",
 				},
 				{
-					title: "Fix Reported Bugs",
-					description: "Prioritize and resolve bugs reported by users.",
+					action: "Fix Reported Bugs",
+					reason: "Prioritize and resolve bugs reported by users.",
 				},
 				{
-					title: "Increase Communication",
-					description: "Keep users informed about updates and fixes.",
+					action: "Increase Communication",
+					reason: "Keep users informed about updates and fixes.",
 				},
 			],
 		};
 
 		const dummyData3: SuggestionsResponseSchema = {
 			trend: "Stable Neutral Feedback",
-			actions: [
+			suggestions: [
 				{
-					title: "Gather More Feedback",
-					description: "Encourage users to provide more detailed feedback.",
+					action: "Gather More Feedback",
+					reason: "Encourage users to provide more detailed feedback.",
 				},
 				{
-					title: "Analyze Neutral Comments",
-					description:
+					action: "Analyze Neutral Comments",
+					reason:
 						"Investigate neutral feedback to identify areas for improvement.",
 				},
 				{
-					title: "Engage with Users",
-					description:
+					action: "Engage with Users",
+					reason:
 						"Engage with users to understand their needs and expectations.",
 				},
 			],
