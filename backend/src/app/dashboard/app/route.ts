@@ -1,8 +1,8 @@
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { analyticsSummariesEndpoint } from "./analyticsSummaries";
-import { feedbackEndpoint } from "./feedbacks";
-import { suggestionEndpoint } from "./suggestions";
+import { analyticsSummariesEndpoint } from "./routers/analyticsSummaries";
+import { feedbackEndpoint } from "./routers/feedbacks";
+import { suggestionEndpoint } from "./routers/suggestions";
 
 export const app = new OpenAPIHono();
 
