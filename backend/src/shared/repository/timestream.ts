@@ -1,21 +1,3 @@
-import {
-	MeasureValueType,
-	QueryCommand,
-	type QueryCommandInput,
-	type Row,
-	TimestreamQueryClient,
-} from "@aws-sdk/client-timestream-query";
-import {
-	TimestreamWriteClient,
-	WriteRecordsCommand,
-	type WriteRecordsCommandInput,
-	type _Record,
-} from "@aws-sdk/client-timestream-write";
-import { z } from "@hono/zod-openapi";
-import {
-	TIMRESTREAM_DATABASE_NAME,
-	TIMRESTREAM_TABLE_NAME,
-} from "src/shared/utils/environmentVariables";
 import type {
 	FeedbackSentiment,
 	FeedbackSummary,
@@ -51,149 +33,22 @@ export interface ITimestreamRepository {
 }
 
 export class TimestreamRepositoryImpl implements ITimestreamRepository {
-	private readonly queryClient: TimestreamQueryClient;
-	private readonly writeClient: TimestreamWriteClient;
-
-	constructor() {
-		this.queryClient = new TimestreamQueryClient({
-			region: process.env.AWS_REGION,
-		});
-		this.writeClient = new TimestreamWriteClient({
-			region: process.env.AWS_REGION,
-		});
-	}
-
 	async readRecords(timeRange: number): Promise<FeedbackSummary[]> {
-		const input: QueryCommandInput = {
-			QueryString: `SELECT source, time, feedback, score, label FROM ${TIMRESTREAM_DATABASE_NAME}.${TIMRESTREAM_TABLE_NAME} WHERE time between ago(${timeRange}m) and now() ORDER BY time DESC`,
-		};
-
-		const response = await this.queryClient.send(new QueryCommand(input));
-
-		return transformRowToSentimentSummary(response.Rows ?? []);
+		return Promise.resolve([]);
 	}
 
 	async readTimeRange(from: Date, to: Date): Promise<FeedbackSummary[]> {
-		const input: QueryCommandInput = {
-			QueryString: `SELECT source, time, feedback, score, label FROM ${TIMRESTREAM_DATABASE_NAME}.${TIMRESTREAM_TABLE_NAME} WHERE time BETWEEN from_iso8601_timestamp('${from.toISOString()}') AND from_iso8601_timestamp('${to.toISOString()}') ORDER BY time DESC`,
-		};
-
-		const response = await this.queryClient.send(new QueryCommand(input));
-
-		return transformRowToSentimentSummary(response.Rows ?? []);
+		return Promise.resolve([]);
 	}
 
-	async readRecordByNumber(number: number): Promise<FeedbackSummary[]> {
-		const input: QueryCommandInput = {
-			QueryString: `SELECT source, time, feedback, score, label FROM ${TIMRESTREAM_DATABASE_NAME}.${TIMRESTREAM_TABLE_NAME} ORDER BY time DESC LIMIT ${number}`,
-		};
-
-		const response = await this.queryClient.send(new QueryCommand(input));
-
-		return transformRowToSentimentSummary(response.Rows ?? []);
+	readRecordByNumber(number: number): Promise<FeedbackSummary[]> {
+		return Promise.resolve([]);
 	}
 
 	async writeFeedbacks(sentimentData: FeedbackSentiment[]): Promise<void> {
-		// transform the data from feedback sentiment to the format that Timestream accepts
-		const records: _Record[] = sentimentData.map((sentiment) => ({
-			Dimensions: [
-				{
-					Name: "source",
-					Value: sentiment.feedbackSource,
-				},
-			],
-			MeasureName: "sentiment_data",
-			MeasureValue: MeasureValueType.MULTI,
-			MeasureValues: [
-				{
-					Name: "score",
-					Value: sentiment.sentimentScore.toString(),
-					Type: MeasureValueType.DOUBLE,
-				},
-				{
-					Name: "label",
-					Value: sentiment.sentimentLabel,
-					Type: MeasureValueType.VARCHAR,
-				},
-				{
-					Name: "feedback",
-					Value: sentiment.feedback,
-					Type: MeasureValueType.VARCHAR,
-				},
-				{
-					Name: "user_id",
-					Value: sentiment.userIdentifier,
-					Type: MeasureValueType.VARCHAR,
-				},
-			],
-			Time: new Date(sentiment.timestamp).getTime().toString(), // from ISO string to epoch time
-		}));
-
-		const params: WriteRecordsCommandInput = {
-			DatabaseName: TIMRESTREAM_DATABASE_NAME,
-			TableName: TIMRESTREAM_TABLE_NAME,
-			Records: records,
-		};
-
-		await this.writeClient.send(new WriteRecordsCommand(params));
+		console.log("received feedbacks", sentimentData);
 	}
 }
-
-/**
- * Transform the row data from Timestream to the `FeedbackSummary` type
- * If the is invalid, that data will be skipped
- */
-const transformRowToSentimentSummary = (rows: Row[]): FeedbackSummary[] => {
-	if (!rows.length) return [];
-
-	const feedbackSummaries: FeedbackSummary[] = [];
-
-	for (const row of rows) {
-		const record = row.Data;
-
-		// skip invalid data
-		if (!record) continue;
-		if (record.length < 5) continue;
-
-		const summary = {
-			timestamp: trensformTimestreamDateToDate(
-				record[1].ScalarValue as string,
-			).toISOString(), // This value is going to be checked by zod
-			feedbackSource: record[0].ScalarValue,
-			feedback: record[2].ScalarValue,
-			sentimentLabel: record[4].ScalarValue,
-			sentimentScore: Number(record[3].ScalarValue),
-		};
-
-		// check the schema
-		if (feedbackSummarySchema.safeParse(summary).success) {
-			feedbackSummaries.push(summary as FeedbackSummary);
-		}
-	}
-
-	return feedbackSummaries;
-};
-
-/**
- * the feedback summary schema
- */
-const feedbackSummarySchema = z.object({
-	source: z.string(),
-	time: z.string().datetime(),
-	feedback: z.string(),
-	score: z.number().min(-1).max(1),
-	label: z.string(),
-});
-
-/**
- * Timestream adapts the UTC date timestamp
- * The format is `YYYY-MM-DD HH:mm:ss.sssssssss`
- * @param date
- */
-const trensformTimestreamDateToDate = (timestreamDatetime: string): Date => {
-	const adjustedString = `${timestreamDatetime.slice(0, 23)}Z`;
-	return new Date(adjustedString);
-};
 
 export class MockTimestreamRepository implements ITimestreamRepository {
 	async readRecords(timeRange: number): Promise<FeedbackSummary[]> {

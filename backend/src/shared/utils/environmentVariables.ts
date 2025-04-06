@@ -2,9 +2,6 @@ export const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 export const SENTIMENT_QUEUE_URL = process.env.SENTIMENT_QUEUE_URL || "";
 export const ALERT_ANALYSIS_QUEUE_URL =
 	process.env.ALERT_ANALYSIS_QUEUE_URL || "";
-export const TIMRESTREAM_DATABASE_NAME =
-	process.env.TIMRESTREAM_DATABASE_NAME || "";
-export const TIMRESTREAM_TABLE_NAME = process.env.TIMRESTREAM_TABLE_NAME || "";
 
 /**
  * If AWS Lambda environment exists, it means the code is running in AWS Lambda.

@@ -34,8 +34,6 @@ To see the schema, run this project locally and open the following URL:
 |:------------------------------|:-----------------------------|
 | SENTIMENT_QUEUE_URL[^1]       | The statement queue's URL    |
 | ALERT_ANALYTICS_QUEUE_URL[^2] | The alert analysis Queue URL |
-| TIMRESTREAM_DATABASE_NAME     | Timestream's DB Name         |
-| TIMRESTREAM_TABLE_NAME        | Timestream's Table Name      |
 
 [^1]: `DashboardFunction` only.
 [^2]: `StatementFunction` only.
