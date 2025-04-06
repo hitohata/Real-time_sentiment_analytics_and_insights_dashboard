@@ -37,7 +37,7 @@ export class TimestreamRepositoryImpl implements ITimestreamRepository {
 		return Promise.resolve([]);
 	}
 
-	async readTimeRange(from: Date, to: Date): Promise<FeedbackSentiment[]> {
+	async readTimeRange(from: Date, to: Date): Promise<FeedbackSummary[]> {
 		return Promise.resolve([]);
 	}
 
