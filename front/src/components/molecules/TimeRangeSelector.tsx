@@ -1,10 +1,6 @@
 import React from "react";
 import { Button } from "../atoms/button";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../atoms/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../atoms/popover";
 import { Calendar } from "../atoms/calendar";
 import { cn } from "../../lib/utils";
 import { format } from "date-fns";

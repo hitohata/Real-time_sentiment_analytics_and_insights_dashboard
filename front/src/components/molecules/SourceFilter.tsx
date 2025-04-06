@@ -10,11 +10,7 @@ import {
 	CommandList,
 	CommandSeparator,
 } from "../atoms/command";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../atoms/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../atoms/popover";
 import { cn } from "../../lib/utils";
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { useState } from "react";
