@@ -146,8 +146,7 @@ export class AIAnalysisMock implements IAIAnalysis {
 			suggestions: [
 				{
 					action: "Enhance New Features",
-					reason:
-						"Continue to improve and add new features that users love.",
+					reason: "Continue to improve and add new features that users love.",
 				},
 				{
 					action: "Promote Positive Reviews",
@@ -155,8 +154,7 @@ export class AIAnalysisMock implements IAIAnalysis {
 				},
 				{
 					action: "Reward Loyal Customers",
-					reason:
-						"Implement a loyalty program to reward satisfied customers.",
+					reason: "Implement a loyalty program to reward satisfied customers.",
 				},
 			],
 		};

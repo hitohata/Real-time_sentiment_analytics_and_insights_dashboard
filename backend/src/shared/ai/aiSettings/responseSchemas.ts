@@ -105,7 +105,7 @@ export const SUGGESTIONS_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 						},
 					},
 					additionalProperties: false,
-					required: ["title", "description"],
+					required: ["action", "reason"],
 				},
 			},
 		},
