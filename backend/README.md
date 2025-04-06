@@ -32,7 +32,7 @@ To see the schema, run this project locally and open the following URL:
 
 | Name                          | Description                  |
 |:------------------------------|:-----------------------------|
-| STATEMENT_QUEUE_URL[^1]       | The statement queue's URL    |
+| SENTIMENT_QUEUE_URL[^1]       | The statement queue's URL    |
 | ALERT_ANALYTICS_QUEUE_URL[^2] | The alert analysis Queue URL |
 
 [^1]: `DashboardFunction` only.
