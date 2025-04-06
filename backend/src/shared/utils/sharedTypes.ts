@@ -43,7 +43,7 @@ export type FeedbackSentiment = {
  * This type if for the feedback summary
  * This data is delivered to clients, the `userIdentifier` is not included
  */
-export type FeedbackSummary = {} & Omit<FeedbackSentiment, "userIdentifier">;
+export type FeedbackSummary = Omit<FeedbackSentiment, "userIdentifier">;
 
 /**
  * The use case interface
