@@ -1,12 +1,12 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../atoms/button";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
+} from "../atoms/popover";
+import { Calendar } from "../atoms/calendar";
+import { cn } from "../../lib/utils";
 import { format } from "date-fns";
 
 interface TimeRangeSelectorProps {

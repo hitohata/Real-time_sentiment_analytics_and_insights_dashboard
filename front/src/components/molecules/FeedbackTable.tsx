@@ -1,4 +1,4 @@
-import { FeedbackItem } from "@/types/feedback";
+import { FeedbackItem } from "../../types/feedback";
 import { format } from "date-fns";
 import {
 	Table,
@@ -7,7 +7,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
+} from "../atoms/table";
 import SentimentBadge from "./SentimentBadge";
 import SourceBadge from "./SourceBadge";
 

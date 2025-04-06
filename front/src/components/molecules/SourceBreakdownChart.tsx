@@ -9,7 +9,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import { SourceBreakdownItem } from "@/types/feedback";
+import { SourceBreakdownItem } from "../../types/feedback";
 
 interface SourceBreakdownChartProps {
 	data: SourceBreakdownItem[];

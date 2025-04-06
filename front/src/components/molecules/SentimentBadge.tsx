@@ -1,5 +1,5 @@
-import { SentimentType } from "@/types/feedback";
-import { cn } from "@/lib/utils";
+import { SentimentType } from "../../types/feedback";
+import { cn } from "../../lib/utils";
 
 interface SentimentBadgeProps {
 	sentiment: SentimentType;

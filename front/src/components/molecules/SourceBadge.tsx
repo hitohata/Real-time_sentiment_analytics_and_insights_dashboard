@@ -1,5 +1,5 @@
-import { SourceType } from "@/types/feedback";
-import { cn } from "@/lib/utils";
+import { SourceType } from "../../types/feedback";
+import { cn } from "../../lib/utils";
 
 interface SourceBadgeProps {
 	source: SourceType;

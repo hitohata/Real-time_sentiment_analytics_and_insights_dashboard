@@ -1,12 +1,12 @@
-import { SuggestedAction } from "@/types/feedback";
+import { SuggestedAction } from "../../types/feedback";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+} from "../atoms/card";
+import { cn } from "../../lib/utils";
 import SentimentBadge from "./SentimentBadge";
 
 interface SuggestedActionsProps {

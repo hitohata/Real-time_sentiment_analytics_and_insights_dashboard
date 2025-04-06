@@ -1,6 +1,6 @@
-import { SourceType } from "@/types/feedback";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { SourceType } from "../../types/feedback";
+import { Badge } from "../atoms/badge";
+import { Button } from "../atoms/button";
 import {
 	Command,
 	CommandEmpty,
@@ -9,13 +9,13 @@ import {
 	CommandItem,
 	CommandList,
 	CommandSeparator,
-} from "@/components/ui/command";
+} from "../atoms/command";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+} from "../atoms/popover";
+import { cn } from "../../lib/utils";
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { useState } from "react";
 

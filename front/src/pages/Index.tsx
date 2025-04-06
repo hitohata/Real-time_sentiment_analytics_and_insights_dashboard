@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import TimeSeriesChart from "@/components/TimeSeriesChart";
-import SourceBreakdownChart from "@/components/SourceBreakdownChart";
-import FeedbackTable from "@/components/FeedbackTable";
-import SuggestedActions from "@/components/SuggestedActions";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/atoms/card";
+import { Button } from "../components/atoms/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/atoms/tabs";
+import TimeSeriesChart from "../components/molecules/TimeSeriesChart";
+import SourceBreakdownChart from "../components/molecules/SourceBreakdownChart";
+import FeedbackTable from "../components/molecules/FeedbackTable";
+import SuggestedActions from "../components/molecules/SuggestedActions";
 import { FilterState, FeedbackItem, SourceType } from "@/types/feedback";
 import {
 	generateMockFeedbackData,
@@ -13,9 +13,9 @@ import {
 	generateSuggestedActions,
 	generateTimeSeriesData,
 } from "@/utils/mockData";
-import TimeRangeSelector from "@/components/TimeRangeSelector";
-import SourceFilter from "@/components/SourceFilter";
-import RefreshIndicator from "@/components/RefreshIndicator";
+import TimeRangeSelector from "../components/molecules/TimeRangeSelector";
+import SourceFilter from "../components/molecules/SourceFilter";
+import RefreshIndicator from "../components/molecules/RefreshIndicator";
 import { ChartBar, ChartPie } from "lucide-react";
 import { subDays } from "date-fns";
 
@@ -156,7 +156,6 @@ const Dashboard = () => {
 					<CardHeader className="pb-2">
 						<div className="flex items-center justify-between">
 							<CardTitle>Feedback Volume Over Time</CardTitle>
-
 							<TimeRangeSelector
 								startDate={filters.timeRange.start}
 								endDate={filters.timeRange.end}

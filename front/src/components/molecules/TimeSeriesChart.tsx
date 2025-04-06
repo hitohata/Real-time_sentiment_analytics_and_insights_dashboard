@@ -9,7 +9,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import { TimeSeriesDataPoint } from "@/types/feedback";
+import { TimeSeriesDataPoint } from "../../types/feedback";
 import { format, isValid, parseISO } from "date-fns";
 
 interface TimeSeriesChartProps {

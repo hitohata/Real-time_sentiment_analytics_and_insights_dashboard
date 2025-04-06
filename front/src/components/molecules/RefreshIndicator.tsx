@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../atoms/button";
 import { RefreshCw } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 interface RefreshIndicatorProps {
 	isAutoRefreshEnabled: boolean;
