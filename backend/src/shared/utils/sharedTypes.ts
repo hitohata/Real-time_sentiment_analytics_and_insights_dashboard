@@ -54,3 +54,14 @@ export type FeedbackSummary = Omit<FeedbackSentiment, "userIdentifier">;
 export interface IUseCase<I, O> {
 	execute(input: I): O;
 }
+
+/**
+ * The queue type for the alerting service
+ */
+export type AlerterQueueType = {
+	/**
+	 * The latest feedback datetime
+	 * This is a string in ISO 8601 format
+	 */
+	date: string;
+};
