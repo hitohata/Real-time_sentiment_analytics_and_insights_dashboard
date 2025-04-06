@@ -12,19 +12,12 @@ import {
 	SourceType,
 	AnalysisSummaryType, TrendSuggestionsType,
 } from "@/types/feedback";
-import {
-	generateMockFeedbackData,
-	generateSourceBreakdownData,
-	generateSuggestedActions,
-} from "@/utils/mockData";
-import SourceFilter from "../components/molecules/SourceFilter";
-import RefreshIndicator from "../components/molecules/RefreshIndicator";
-import { subDays } from "date-fns";
 import { FeedbackVolumeChart } from "../components/organisms/FeedbackVolumeChart";
 import { SentimentBarChart } from "../components/organisms/SentimentBarChart";
 import { RecentFeedback } from "../components/organisms/RecentFeedback";
 import { ActionsTable } from "../components/organisms/ActionsTable";
 import FilterSection from "@/components/molecules/FilterSection";
+import { Alert } from "@/components/organisms/Alert"
 
 const Dashboard = () => {
 	// State management
@@ -33,6 +26,7 @@ const Dashboard = () => {
 	const [lastRefreshTime, setLastRefreshTime] = useState<Date>(new Date());
 	const [isAutoRefreshEnabled, setIsAutoRefreshEnabled] =
 		useState<boolean>(true);
+	const [alerts, setAlerts] = useState<string[]>(["hoge", "fuge", "piyo"]);
 	const [filters, setFilters] = useState<FilterState>({
 		timeRange: {
 			start: null,
@@ -70,7 +64,6 @@ const Dashboard = () => {
 
 	// Apply filters whenever they change
 	useEffect(() => {
-		console.log("filters", filters);
 		applyFilters();
 	}, [allFeedback, filters]);
 
@@ -120,11 +113,14 @@ const Dashboard = () => {
 
 	// Source filter handler
 	const handleSourceFilterChange = (sources: SourceType[]) => {
-		console.log("source filter", sources)
 		setFilters((prev) => ({
 			...prev,
 			sources,
 		}));
+	}
+
+	const handleDeleteAlert = (index: number) => {
+		setAlerts((prevAlerts) => prevAlerts.filter((_, i) => i !== index));
 	}
 
 	return (
@@ -137,12 +133,9 @@ const Dashboard = () => {
 					</p>
 				</div>
 
-				{/*<RefreshIndicator*/}
-				{/*	isAutoRefreshEnabled={isAutoRefreshEnabled}*/}
-				{/*	lastRefreshTime={lastRefreshTime}*/}
-				{/*	onRefreshClick={handleRefresh}*/}
-				{/*/>*/}
 			</div>
+
+			<Alert alerts={alerts} onAlertDelete={handleDeleteAlert}/>
 
 		  	<FilterSection
 				filters={filters}

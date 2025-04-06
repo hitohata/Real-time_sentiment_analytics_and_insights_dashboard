@@ -29,7 +29,6 @@ const SourceFilter = ({
 	className,
 }: SourceFilterProps) => {
 	const [open, setOpen] = useState(false);
-	const [localSources, setLocalSources] = useState<SourceType[]>(filters.sources);
 
 	const handleSelect = (source: SourceType) => {
 		if (filters.sources.includes(source)) {
