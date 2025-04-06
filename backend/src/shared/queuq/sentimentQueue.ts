@@ -21,7 +21,7 @@ export interface ISentimentQueue {
 	failureQueue(id: string): Promise<boolean>;
 }
 
-export class SentimentQueueMock implements ISentimentQueue {
+export class SentimentQueueImpl implements ISentimentQueue {
 	constructor(private queueUrl: string) {}
 	async sendFeedback(feedback: RowFeedback): Promise<boolean> {
 		// TODO: Implement the logic to send the feedback to the queue
@@ -39,6 +39,7 @@ export class SentimentQueueMock implements ISentimentQueue {
 
 export class MockSentimentQueue implements ISentimentQueue {
 	async sendFeedback(feedback: RowFeedback): Promise<boolean> {
+		console.log("received feedback", feedback);
 		return true;
 	}
 
