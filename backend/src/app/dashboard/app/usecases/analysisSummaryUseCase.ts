@@ -5,9 +5,9 @@ import {
 	TimestreamRepositoryImpl,
 } from "src/shared/repository/timestream";
 import { MOCK } from "src/shared/utils/environmentVariables";
-import type { FeedbackSummary } from "src/shared/utils/sharedTypes";
+import type { FeedbackSummary, IUseCase } from "src/shared/utils/sharedTypes";
 
-interface IProduct {
+interface IProps {
 	rangeFrom?: Date;
 	rangeTo?: Date;
 }
@@ -21,13 +21,14 @@ interface IProduct {
  * @param rangeTo
  * @param timestreamRepository
  */
-class AnalysisSummaryUseCase {
+class AnalysisSummaryUseCase
+	implements IUseCase<IProps, Promise<Result<FeedbackSummary[], string>>>
+{
 	constructor(private readonly timestreamRepository: ITimestreamRepository) {}
 
-	async execute({
-		rangeFrom,
-		rangeTo,
-	}: IProduct): Promise<Result<FeedbackSummary[], string>> {
+	async execute(input: IProps): Promise<Result<FeedbackSummary[], string>> {
+		const { rangeFrom, rangeTo } = input;
+
 		// check the input data	range
 		if (rangeFrom && !rangeTo)
 			return err("Invalid date range. The range must be both or none.");
