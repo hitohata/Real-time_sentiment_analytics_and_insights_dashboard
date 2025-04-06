@@ -1,3 +1,17 @@
+import {
+	MeasureValueType,
+	TimestreamQueryClient,
+} from "@aws-sdk/client-timestream-query";
+import {
+	TimestreamWriteClient,
+	WriteRecordsCommand,
+	type WriteRecordsCommandInput,
+	type _Record,
+} from "@aws-sdk/client-timestream-write";
+import {
+	TIMRESTREAM_DATABASE_NAME,
+	TIMRESTREAM_TABLE_NAME,
+} from "src/shared/utils/environmentVariables";
 import type {
 	FeedbackSentiment,
 	FeedbackSummary,
@@ -33,6 +47,18 @@ export interface ITimestreamRepository {
 }
 
 export class TimestreamRepositoryImpl implements ITimestreamRepository {
+	private readonly queryClient: TimestreamQueryClient;
+	private readonly writeClient: TimestreamWriteClient;
+
+	constructor() {
+		this.queryClient = new TimestreamQueryClient({
+			region: process.env.AWS_REGION,
+		});
+		this.writeClient = new TimestreamWriteClient({
+			region: process.env.AWS_REGION,
+		});
+	}
+
 	async readRecords(timeRange: number): Promise<FeedbackSummary[]> {
 		return Promise.resolve([]);
 	}
@@ -46,7 +72,48 @@ export class TimestreamRepositoryImpl implements ITimestreamRepository {
 	}
 
 	async writeFeedbacks(sentimentData: FeedbackSentiment[]): Promise<void> {
-		console.log("received feedbacks", sentimentData);
+		// transform the data from feedback sentiment to the format that Timestream accepts
+		const records: _Record[] = sentimentData.map((sentiment) => ({
+			Dimensions: [
+				{
+					Name: "source",
+					Value: sentiment.feedbackSource,
+				},
+			],
+			MeasureName: "sentiment_data",
+			MeasureValue: MeasureValueType.MULTI,
+			MeasureValues: [
+				{
+					Name: "score",
+					Value: sentiment.sentimentScore.toString(),
+					Type: MeasureValueType.DOUBLE,
+				},
+				{
+					Name: "label",
+					Value: sentiment.sentimentLabel,
+					Type: MeasureValueType.VARCHAR,
+				},
+				{
+					Name: "feedback",
+					Value: sentiment.feedback,
+					Type: MeasureValueType.VARCHAR,
+				},
+				{
+					Name: "user_id",
+					Value: sentiment.userIdentifier,
+					Type: MeasureValueType.VARCHAR,
+				},
+			],
+			Time: new Date(sentiment.timestamp).getTime().toString(), // from ISO string to epoch time
+		}));
+
+		const params: WriteRecordsCommandInput = {
+			DatabaseName: TIMRESTREAM_DATABASE_NAME,
+			TableName: TIMRESTREAM_TABLE_NAME,
+			Records: records,
+		};
+
+		await this.writeClient.send(new WriteRecordsCommand(params));
 	}
 }
 
