@@ -49,24 +49,97 @@ Return a JSON array where each element contains:
  * This is the prompt used to analyze the trend of the user feedback.
  */
 export const SENTIMENT_TREND_ANALYSIS_PROMPT = `
-Analyze user feedback to identify trends and generate tailored recommendations for marketing or product teams. Provide three prioritized recommendations based on the usefulness and potential impact. 
-# Steps 
-1. **Collect Feedback**: Gather a representative sample of user feedback data. 
-2. **Analyze Trends**: Examine the feedback to identify common themes, issues, or suggestions. Look for patterns that might indicate areas for improvement or expansion.
-3. **Prioritize Findings**: Assess the relevance and impact of each trend on the organization's goals and target audience.
-4. **Generate Recommendations**: Develop specific, actionable recommendations for the marketing or product teams, emphasizing the top three in terms of usefulness.
+Analyze user feedback data to identify trends and generate actionable recommendations for marketing or product teams.
+
+- **Collect Feedback**: You will provide a table containing user feedback data for analysis.
+- **Analyze Trends**: Examine the feedback to identify common themes, issues, or suggestions. Look for patterns indicating areas for improvement or expansion.
+- **Prioritize Findings**: Assess each trend's relevance and potential impact concerning organizational goals and target audience preferences.
+- **Generate Recommendations**: Develop three specific, actionable recommendations for the marketing or product teams based on the prioritized findings.
+
+# Steps
+
+1. **Analyze Trends**: Carefully review the feedback to identify recurring themes, common issues, or frequent suggestions.
+2. **Prioritize Findings**: Evaluate the significance and potential impact of each trend.
+3. **Generate Recommendations**:
+   - Create three specific, actionable recommendations based on prioritized findings.
+   - Rank the recommendations from 1 to 3, with 1 being the most beneficial.
+   - Provide a rationale for each recommendation, highlighting the trend or feedback element it addresses.
+
 # Output Format
-- The output should consist of three bullet points, each representing a recommendation.
-- Each recommendation should be preceded by its rank (1 to 3), with 1 being the most useful.
-- Include a brief rationale for each recommendation, identifying the key trend or feedback element it addresses.
+
+The output should be in JSON format:
+
+\`\`\`json
+{
+  "trend": "[Common Trend Identified]",
+  "actions": [
+    {
+      "action": "[Recommendation 1]",
+      "reason": "[Rationale for Recommendation 1]"
+    },
+    {
+      "action": "[Recommendation 2]",
+      "reason": "[Rationale for Recommendation 2]"
+    },
+    {
+      "action": "[Recommendation 3]",
+      "reason": "[Rationale for Recommendation 3]"
+    }
+  ]
+}
+\`\`\`
+
 # Examples
-- **1. Improve Mobile App Navigation**
-  - *Rationale*: A significant portion of the feedback highlights difficulty in navigating the mobile app, pointing to a need for a more intuitive user interface that could improve user retention.
-- **2. Launch a Loyalty Program**
-  - *Rationale*: Users frequently suggest incentives for repeat purchases. Instituting a loyalty program could enhance customer satisfaction and boost repeat sales.
-- **3. Enhance Product Documentation**
-  - *Rationale*: Users often mention confusion about product functionalities, indicating a need for clearer, more comprehensive documentation to reduce customer support inquiries.
+
+**Example Input:**
+- Feedback Data Table
+- User comments and ratings
+
+**Example Output:**
+\`\`\`json
+{
+  "trend": "Users reported difficulties with navigation",
+  "actions": [
+    {
+      "action": "Improve Mobile App Navigation",
+      "reason": "A significant number of users reported difficulties with navigation, suggesting a need for a more intuitive user interface to enhance user retention."
+    },
+    {
+      "action": "Launch a Loyalty Program",
+      "reason": "Many users suggested introducing incentives for repeat purchases. A loyalty program could increase customer satisfaction and drive repeat sales."
+    },
+    {
+      "action": "Enhance Product Documentation",
+      "reason": "Users frequently expressed confusion about product functionalities, indicating the necessity for clearer documentation to minimize customer support inquiries."
+    }
+  ]
+}
+\`\`\`
+
 # Notes
-- Ensure the recommendations are actionable and align with company resources and strategy.
-- Consider any unique insights from niche user segments or emerging markets.
+
+- Ensure recommendations are actionable and align with company resources and strategy.
+- Consider insights from niche user segments or emerging markets, if applicable.
+- Tailor recommendations to suit the specific feedback trends identified.
+`;
+
+export const COMMON_RESOLUTION_STRATEGIES = `
+The following table is the common resolution strategies for the feedback system:
+| Title | Description |
+|---|---|
+| Centralized Feedback System | Consolidate feedback from all channels into a single system for easier management and analysis. |
+| Prioritization Framework | Develop a framework to prioritize feedback based on impact, frequency, and urgency. |
+| Rapid Response Team | Establish a dedicated team to address high-priority feedback quickly and efficiently. |
+| Feedback Categorization | Classify feedback into categories to streamline resolution efforts. |
+| User Communication | Respond promptly, acknowledging feedback and providing updates on resolution status. |
+| Cross-Department Collaboration | Facilitate collaboration between teams to address feedback comprehensively. |
+| Feedback Cycle Transparency | Keep users informed about the progress of their feedback through regular updates. |
+| Feature Request Voting | Allow users to vote on feature requests to identify the most desired enhancements. |
+| Regular Feedback Review | Conduct regular meetings to review and analyze feedback trends and decide on action plans. |
+| Data-Driven Decisions | Use analytics to identify patterns and insights from feedback for product improvements. |
+| Customer Surveys and Follow-ups | Deploy surveys for detailed feedback and follow up to ensure satisfaction. |
+| Proactive Issue Resolution | Anticipate common problems and address them proactively before user reports. |
+| User Education Initiatives | Create educational content to help users maximize their use of the software. |
+| Continuous Improvement Loop | Implement a feedback loop to incorporate insights into product development. |
+| Feedback Recognition Program | Acknowledge and thank users for valuable feedback to encourage engagement and loyalty. |
 `;

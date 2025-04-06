@@ -65,39 +65,43 @@ export type SentimentAnalysisResponseSchema = {
 };
 
 /**
- * The response format for the sentiment trend analysis.
  * The response format is a JSON schema that defines the structure of the response.
  *
  * @Example
  * ```json
  * {
- *  "trend": [
- *    {
- *      "title": "string",
- *      "description": "string"
- *    }
- *  ]
+ * 	"title": "string",
+ * 	"actions" [
+ * 	  	{
+ * 			"action": "string",
+ * 			"reason": "string"
+ * 	    }
+ * 	 ],
  * }
  * ```
  */
-export const SENTIMENT_TREND_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
+export const SUGGESTIONS_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 	type: "json_schema",
-	name: "trend",
+	name: "suggestions",
 	schema: {
 		type: "object",
 		properties: {
 			trend: {
+				type: "string",
+				description: "current trend of the feedback",
+			},
+			actions: {
 				type: "array",
 				items: {
 					type: "object",
 					properties: {
-						title: {
+						action: {
 							type: "string",
-							description: "title of suggestions",
+							description: "the action to be taken",
 						},
-						description: {
+						reason: {
 							type: "string",
-							description: "detail of suggestions",
+							description: "the reason why this suggestion is made",
 						},
 					},
 					additionalProperties: false,
@@ -106,15 +110,16 @@ export const SENTIMENT_TREND_RESPONSE_SCHEMA: ResponseFormatTextConfig = {
 			},
 		},
 		additionalProperties: false,
-		required: ["trend"],
+		required: ["trend", "actions"],
 	},
 };
 
 /**
- * The response schema for the sentiment trend.
+ * The response schema for the suggestions.
  */
-export type SentimentTrendResponseSchema = {
-	trend: {
+export type SuggestionsResponseSchema = {
+	trend: string;
+	actions: {
 		title: string;
 		description: string;
 	}[];

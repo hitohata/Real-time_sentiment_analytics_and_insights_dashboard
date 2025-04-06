@@ -6,14 +6,15 @@ import type {
 	RowFeedback,
 } from "src/shared/utils/sharedTypes";
 import {
+	COMMON_RESOLUTION_STRATEGIES,
 	SENTIMENT_ANALYSIS_PROMPT,
 	SENTIMENT_TREND_ANALYSIS_PROMPT,
 } from "./aiSettings/prompts";
 import {
 	SENTIMENT_ANALYSIS_RESPONSE_SCHEMA,
-	SENTIMENT_TREND_RESPONSE_SCHEMA,
+	SUGGESTIONS_RESPONSE_SCHEMA,
 	type SentimentAnalysisResponseSchema,
-	type SentimentTrendResponseSchema,
+	type SuggestionsResponseSchema,
 } from "./aiSettings/responseSchemas";
 
 export interface IAIAnalysis {
@@ -28,18 +29,22 @@ export interface IAIAnalysis {
 	 */
 	feedbackTrendAnalysis: (
 		feedbacks: string[],
-	) => Promise<SentimentTrendResponseSchema>;
+	) => Promise<SuggestionsResponseSchema>;
 }
-
-const client = new OpenAI({
-	apiKey: OPENAI_API_KEY,
-});
 
 /**
  * This class is used to analyze the feedbacks
  * @implements IAIAnalysis
  */
 export class AIAnalysisImplementation implements IAIAnalysis {
+	private readonly client: OpenAI;
+
+	constructor() {
+		this.client = new OpenAI({
+			apiKey: OPENAI_API_KEY,
+		});
+	}
+
 	async sentimentAnalysis(
 		feedbacks: RowFeedback[],
 	): Promise<FeedbackSentiment[]> {
@@ -57,7 +62,7 @@ export class AIAnalysisImplementation implements IAIAnalysis {
 		}
 
 		// call the AI to analyze the feedbacks
-		const response = await client.responses.create({
+		const response = await this.client.responses.create({
 			model: OPENAI_MODEL,
 			input: [
 				{
@@ -96,8 +101,8 @@ export class AIAnalysisImplementation implements IAIAnalysis {
 
 	async feedbackTrendAnalysis(
 		feedbacks: string[],
-	): Promise<SentimentTrendResponseSchema> {
-		const response = await client.responses.create({
+	): Promise<SuggestionsResponseSchema> {
+		const response = await this.client.responses.create({
 			model: OPENAI_MODEL,
 			input: [
 				{
@@ -105,16 +110,20 @@ export class AIAnalysisImplementation implements IAIAnalysis {
 					content: SENTIMENT_TREND_ANALYSIS_PROMPT,
 				},
 				{
+					role: "system",
+					content: COMMON_RESOLUTION_STRATEGIES,
+				},
+				{
 					role: "user",
 					content: JSON.stringify(feedbacks),
 				},
 			],
 			text: {
-				format: SENTIMENT_TREND_RESPONSE_SCHEMA,
+				format: SUGGESTIONS_RESPONSE_SCHEMA,
 			},
 		});
 
-		return JSON.parse(response.output_text) as SentimentTrendResponseSchema;
+		return JSON.parse(response.output_text) as SuggestionsResponseSchema;
 	}
 }
 
@@ -131,55 +140,62 @@ export class AIAnalysisMock implements IAIAnalysis {
 
 	async feedbackTrendAnalysis(
 		feedbacks: string[],
-	): Promise<SentimentTrendResponseSchema> {
-		const dummyData1: SentimentTrendResponseSchema = {
-			trend: [
+	): Promise<SuggestionsResponseSchema> {
+		const dummyData1: SuggestionsResponseSchema = {
+			trend: "Increase in Positive Feedback",
+			actions: [
 				{
-					title: "Increase in Positive Feedback",
+					title: "Enhance New Features",
 					description:
-						"Users are increasingly satisfied with the new features.",
+						"Continue to improve and add new features that users love.",
 				},
 				{
-					title: "Decrease in Negative Feedback",
-					description: "Fewer complaints about the app's performance.",
+					title: "Promote Positive Reviews",
+					description: "Highlight positive feedback in marketing materials.",
 				},
 				{
-					title: "Stable Neutral Feedback",
-					description: "Neutral feedback remains consistent over time.",
-				},
-			],
-		};
-
-		const dummyData2: SentimentTrendResponseSchema = {
-			trend: [
-				{
-					title: "Positive Sentiment Growth",
-					description: "Positive sentiment has grown by 20% this quarter.",
-				},
-				{
-					title: "Negative Sentiment Decline",
-					description: "Negative sentiment has decreased by 15%.",
-				},
-				{
-					title: "Neutral Sentiment Stability",
-					description: "Neutral sentiment has remained stable.",
+					title: "Reward Loyal Customers",
+					description:
+						"Implement a loyalty program to reward satisfied customers.",
 				},
 			],
 		};
 
-		const dummyData3: SentimentTrendResponseSchema = {
-			trend: [
+		const dummyData2: SuggestionsResponseSchema = {
+			trend: "Decrease in Negative Feedback",
+			actions: [
 				{
-					title: "High Satisfaction with Support",
-					description: "Users are very satisfied with customer support.",
+					title: "Improve Customer Support",
+					description:
+						"Enhance the customer support experience to address issues faster.",
 				},
 				{
-					title: "Improved User Experience",
-					description: "Feedback indicates a better user experience.",
+					title: "Fix Reported Bugs",
+					description: "Prioritize and resolve bugs reported by users.",
 				},
 				{
-					title: "Consistent Feedback on Features",
-					description: "Feedback on features has been consistent.",
+					title: "Increase Communication",
+					description: "Keep users informed about updates and fixes.",
+				},
+			],
+		};
+
+		const dummyData3: SuggestionsResponseSchema = {
+			trend: "Stable Neutral Feedback",
+			actions: [
+				{
+					title: "Gather More Feedback",
+					description: "Encourage users to provide more detailed feedback.",
+				},
+				{
+					title: "Analyze Neutral Comments",
+					description:
+						"Investigate neutral feedback to identify areas for improvement.",
+				},
+				{
+					title: "Engage with Users",
+					description:
+						"Engage with users to understand their needs and expectations.",
 				},
 			],
 		};

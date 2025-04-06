@@ -2,7 +2,7 @@ import {
 	type ISentimentQueue,
 	MockSentimentQueue,
 	SentimentQueueImpl,
-} from "src/shared/queuq/sentimentQueue";
+} from "src/shared/queue/sentimentQueue";
 import {
 	MOCK,
 	SENTIMENT_QUEUE_URL,

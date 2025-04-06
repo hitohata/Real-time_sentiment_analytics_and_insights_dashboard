@@ -39,6 +39,18 @@ export type FeedbackSentiment = {
 	sentimentScore: number;
 } & RowFeedback;
 
+/**
+ * This type if for the feedback summary
+ * This data is delivered to clients, the `userIdentifier` is not included
+ */
+export type FeedbackSummary = {} & Omit<FeedbackSentiment, "userIdentifier">;
+
+/**
+ * The use case interface
+ * The generic types are:
+ * - I: The input type
+ * - O: The output type
+ */
 export interface IUseCase<I, O> {
 	execute(input: I): O;
 }
