@@ -1,4 +1,5 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { analysisSummaryUseCase } from "src/app/dashboard/app/usecases/analysisSummaryUseCase";
 
 export const analyticsSummariesEndpoint = new OpenAPIHono();
 
@@ -15,8 +16,8 @@ const analyticsSummariesSchema = z.object({
 					description: "The feedback from the user.",
 					example: "This is a feedback.",
 				}),
-				statementLabel: z.enum(["positive", "negative", "neutral"]),
-				statementScore: z.number().min(-1).max(1).openapi({
+				sentimentLabel: z.enum(["positive", "negative", "neutral"]),
+				sentimentScore: z.number().min(-1).max(1).openapi({
 					description:
 						"The score of the statement. This should be between -1 and 1. The -1 means negative and 1 means positive.",
 					example: 0.5,
@@ -29,15 +30,15 @@ const analyticsSummariesSchema = z.object({
 					timestamp: "1970-01-01T00:00:00.000Z",
 					feedbackSource: "email",
 					feedback: "This is a feedback.",
-					statementLabel: "positive",
-					statementScore: 0.5,
+					sentimentLabel: "positive",
+					sentimentScore: 0.5,
 				},
 				{
 					timestamp: "1970-01-01T00:00:01.000Z",
 					feedbackSource: "web",
 					feedback: "This is a feedback.",
-					statementLabel: "neutral",
-					statementScore: 0.0,
+					sentimentLabel: "neutral",
+					sentimentScore: 0.0,
 				},
 			],
 		}),
@@ -99,18 +100,49 @@ const route = createRoute({
 		500: {
 			description: "Internal Server Error",
 			content: {
-				"application/json": {
-					schema: z.object({
-						message: z.string(),
-					}),
+				"text/plain": {
+					schema: z.string(),
 				},
 			},
 		},
 	},
 });
 
-analyticsSummariesEndpoint.openapi(route, (c) => {
+analyticsSummariesEndpoint.openapi(route, async (c) => {
 	const { from, to } = c.req.valid("query");
 
-	return c.json({ summaries: [] }, 200);
+	try {
+		const result = await analysisSummaryUseCase.execute({
+			rangeFrom: from ? new Date(from) : undefined,
+			rangeTo: to ? new Date(to) : undefined,
+		});
+
+		if (result.err) {
+			return c.json(
+				{
+					message: result.error,
+				},
+				400,
+			);
+		}
+
+		return c.json(
+			{
+				summaries: result.value.map((summary) => ({
+					timestamp: summary.timestamp,
+					feedbackSource: summary.feedbackSource as "email" | "web" | "app",
+					feedback: summary.feedback,
+					sentimentLabel: summary.sentimentLabel as
+						| "positive"
+						| "negative"
+						| "neutral",
+					sentimentScore: summary.sentimentScore,
+				})),
+			},
+			200,
+		);
+	} catch (error) {
+		console.error(error);
+		return c.text("Internal Server Error", 500);
+	}
 });

@@ -1,4 +1,5 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { feedbackUseCase } from "src/app/dashboard/app/usecases/feedback";
 
 /**
  * The feedback endpoint.
@@ -92,18 +93,31 @@ const route = createRoute({
 				},
 			},
 		},
+		500: {
+			description: "Internal Server Error",
+			content: {
+				"text/plain": {
+					schema: z.string(),
+				},
+			},
+		},
 	},
 });
 
-feedbackEndpoint.openapi(route, (c) => {
+feedbackEndpoint.openapi(route, async (c) => {
 	const body = c.req.valid("json");
 
-	// TODO: implement
+	try {
+		await feedbackUseCase.execute(body);
 
-	return c.json(
-		{
-			message: "Feedback received",
-		},
-		202,
-	);
+		return c.json(
+			{
+				message: "Feedback received",
+			},
+			202,
+		);
+	} catch (error) {
+		console.error(error);
+		return c.text("Internal Server Error", 500);
+	}
 });

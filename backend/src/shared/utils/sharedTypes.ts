@@ -21,20 +21,36 @@ export type RowFeedback = {
 };
 
 /**
- * The feedback with statement
+ * The feedback with sentiment
  */
-export type FeedbackStatement = {
+export type FeedbackSentiment = {
 	/**
-	 * Statement label
+	 * Sentiment label
 	 * This is a string that can be either "positive", "negative", or "neutral".
 	 */
-	statementLabel: string;
+	sentimentLabel: string;
 	/**
-	 * Statement score
+	 * Sentiment score
 	 * This is a number between -1 and 1.
 	 * -1 is very negative
 	 * 0 is neutral
 	 * 1 is very positive
 	 */
-	statement: number;
+	sentimentScore: number;
 } & RowFeedback;
+
+/**
+ * This type if for the feedback summary
+ * This data is delivered to clients, the `userIdentifier` is not included
+ */
+export type FeedbackSummary = Omit<FeedbackSentiment, "userIdentifier">;
+
+/**
+ * The use case interface
+ * The generic types are:
+ * - I: The input type
+ * - O: The output type
+ */
+export interface IUseCase<I, O> {
+	execute(input: I): O;
+}

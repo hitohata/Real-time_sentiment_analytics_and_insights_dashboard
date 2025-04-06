@@ -1,4 +1,5 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { suggestionsUseCase } from "src/app/dashboard/app/usecases/suggestionsUseCase";
 
 export const suggestionEndpoint = new OpenAPIHono();
 
@@ -6,20 +7,39 @@ export const suggestionEndpoint = new OpenAPIHono();
  * The suggestions schema for the dashboard users.
  */
 const suggestionsSchema = z.object({
+	trend: z.string().openapi({
+		description: "The current trend of the feedback.",
+		example: "positive feedback is increasing.",
+	}),
 	suggestions: z
 		.array(
-			z.string().openapi({
-				description: "The suggestion for the dashboard users.",
-				example: "This is a suggestion.",
+			z.object({
+				action: z.string().openapi({
+					description: "The actions that we should take.",
+					example: "This is a suggestion.",
+				}),
+				reason: z.string().openapi({
+					description: "The impact of the suggestion.",
+					example: "the dashboard is very useful.",
+				}),
 			}),
 		)
 		.max(3)
 		.openapi({
-			description: "The suggestions.",
+			description: "The suggestions for the dashboard users.",
 			example: [
-				"This is a suggestion.",
-				"This is another suggestion.",
-				"This is a third suggestion.",
+				{
+					action: "This is a suggestion.",
+					reason: "This is a reason.",
+				},
+				{
+					action: "This is another suggestion.",
+					reason: "This is another reason.",
+				},
+				{
+					action: "This is a third suggestion.",
+					reason: "This is a third reason.",
+				},
 			],
 		}),
 });
@@ -81,26 +101,35 @@ const route = createRoute({
 		500: {
 			description: "Internal Server Error",
 			content: {
-				"application/json": {
-					schema: z.object({
-						message: z.string(),
-					}),
+				"text/plain": {
+					schema: z.string(),
 				},
 			},
 		},
 	},
 });
 
-suggestionEndpoint.openapi(route, (c) => {
+suggestionEndpoint.openapi(route, async (c) => {
 	const { from, to } = c.req.valid("query");
-	return c.json(
-		{
-			suggestions: [
-				"This is a suggestion.",
-				"This is another suggestion.",
-				"This is a third suggestion.",
-			],
-		},
-		200,
-	);
+
+	try {
+		const result = await suggestionsUseCase.execute({
+			rangeFrom: from ? new Date(from) : undefined,
+			rangeTo: to ? new Date(to) : undefined,
+		});
+
+		if (result.err) {
+			return c.json(
+				{
+					message: result.error,
+				},
+				400,
+			);
+		}
+
+		return c.json(result.value, 200);
+	} catch (error) {
+		console.error(error);
+		return c.text("Internal Server Error", 500);
+	}
 });

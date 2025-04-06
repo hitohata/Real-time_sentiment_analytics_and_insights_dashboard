@@ -1,4 +1,4 @@
-import { feedbackTrendAnalysis } from "src/shared/ai/aiAnalysis";
+import { AIAnalysisImplementation } from "src/shared/ai/aiAnalysis";
 
 const dummyFeedbacks: string[] = [
   "Great service, very satisfied!",
@@ -106,7 +106,8 @@ const dummyFeedbacks: string[] = [
 console.log("Starting trend analysis...");
 console.time("statement-trend-analysis");
 
-const result = feedbackTrendAnalysis(dummyFeedbacks);
+const client = new AIAnalysisImplementation();
+const result = client.feedbackTrendAnalysis(dummyFeedbacks);
 
 result.then((res) => {
   console.log(res);
