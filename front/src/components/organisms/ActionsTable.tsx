@@ -1,5 +1,5 @@
 import React from "react";
-import {AnalysisSummaryType, SuggestedAction, TrendSuggestionsType} from "../../types/feedback";
+import { TrendSuggestionsType } from "../../types/feedback";
 import SuggestedActions from "../molecules/SuggestedActions";
 
 interface IProps {

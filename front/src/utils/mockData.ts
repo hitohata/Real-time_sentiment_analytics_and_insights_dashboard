@@ -42,7 +42,7 @@ const getRandomText = (sentiment: string): string => {
 	}
 };
 
-const sources: SourceType[] = ["App", "Web", "Email"];
+const sources: SourceType[] = ["web", "web", "email"];
 
 // Generate random feedback data
 export const generateMockFeedbackData = (count: number): FeedbackItem[] => {

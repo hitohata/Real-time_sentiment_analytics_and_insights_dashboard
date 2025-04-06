@@ -6,17 +6,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../components/atoms/card";
-import { Button } from "../components/atoms/button";
-import {
-	Tabs,
-	TabsList,
-	TabsTrigger,
-	TabsContent,
-} from "../components/atoms/tabs";
-import TimeSeriesChart from "../components/molecules/TimeSeriesChart";
-import SourceBreakdownChart from "../components/molecules/SourceBreakdownChart";
-import FeedbackTable from "../components/molecules/FeedbackTable";
-import SuggestedActions from "../components/molecules/SuggestedActions";
 import {
 	FilterState,
 	FeedbackItem,
@@ -27,29 +16,26 @@ import {
 	generateMockFeedbackData,
 	generateSourceBreakdownData,
 	generateSuggestedActions,
-	generateTimeSeriesData,
 } from "@/utils/mockData";
-import TimeRangeSelector from "../components/molecules/TimeRangeSelector";
 import SourceFilter from "../components/molecules/SourceFilter";
 import RefreshIndicator from "../components/molecules/RefreshIndicator";
-import { ChartBar, ChartPie } from "lucide-react";
 import { subDays } from "date-fns";
 import { FeedbackVolumeChart } from "../components/organisms/FeedbackVolumeChart";
 import { SentimentBarChart } from "../components/organisms/SentimentBarChart";
-import {RecentFeedback} from "../components/organisms/RecentFeedback";
-import {ActionsTable} from "../components/organisms/ActionsTable";
+import { RecentFeedback } from "../components/organisms/RecentFeedback";
+import { ActionsTable } from "../components/organisms/ActionsTable";
+import FilterSection from "@/components/molecules/FilterSection";
 
 const Dashboard = () => {
 	// State management
 	const [allFeedback, setAllFeedback] = useState<FeedbackItem[]>([]);
 	const [filteredFeedback, setFilteredFeedback] = useState<FeedbackItem[]>([]);
-	const [chartView, setChartView] = useState<"bar" | "pie">("bar");
 	const [lastRefreshTime, setLastRefreshTime] = useState<Date>(new Date());
 	const [isAutoRefreshEnabled, setIsAutoRefreshEnabled] =
 		useState<boolean>(true);
 	const [filters, setFilters] = useState<FilterState>({
 		timeRange: {
-			start: subDays(new Date(), 30),
+			start: null,
 			end: null,
 		},
 		sources: ["app", "web", "email"],
@@ -61,10 +47,18 @@ const Dashboard = () => {
 	);
 	const [trendSuggestions, setTrendSuggestions] = useState<TrendSuggestionsType>({
 		trend: "positive",
-			suggestions: [
+		suggestions: [
 			{
-				action: "action",
-				reason: "reason"
+				action: "action1",
+				reason: "reason1"
+			},
+			{
+				action: "action2",
+				reason: "reason2"
+			},
+			{
+				action: "action3",
+				reason: "reason3"
 			}
 		]
 	});
@@ -76,12 +70,13 @@ const Dashboard = () => {
 
 	// Apply filters whenever they change
 	useEffect(() => {
+		console.log("filters", filters);
 		applyFilters();
 	}, [allFeedback, filters]);
 
 	// Loading and refreshing data
 	const loadData = useCallback(() => {
-		setAllFeedback(generateMockFeedbackData(200));
+		// setAllFeedback(generateMockFeedbackData(200));
 		setLastRefreshTime(new Date());
 	}, []);
 
@@ -116,55 +111,21 @@ const Dashboard = () => {
 		setFilteredFeedback(filtered);
 	}, [allFeedback, filters]);
 
-	// Time range filter handlers
-	const handleTimePresetSelected = useCallback((preset: string) => {
-		setIsAutoRefreshEnabled(preset !== "custom");
-
-		if (preset === "all") {
-			setFilters((prev) => ({
-				...prev,
-				timeRange: { start: null, end: null },
-				isCustomTimeRange: false,
-			}));
-		} else if (preset === "30days") {
-			setFilters((prev) => ({
-				...prev,
-				timeRange: { start: subDays(new Date(), 30), end: null },
-				isCustomTimeRange: false,
-			}));
-		} else if (preset === "custom") {
-			setFilters((prev) => ({
-				...prev,
-				isCustomTimeRange: true,
-			}));
-		}
-	}, []);
-
-	const handleStartDateChange = useCallback((date: Date | null) => {
+	const handleTimeChange = (timeRange: { start: Date | null; end: Date | null }) => {
 		setFilters((prev) => ({
 			...prev,
-			timeRange: { ...prev.timeRange, start: date },
-		}));
-	}, []);
-
-	const handleEndDateChange = useCallback((date: Date | null) => {
-		setFilters((prev) => ({
-			...prev,
-			timeRange: { ...prev.timeRange, end: date },
-		}));
-	}, []);
+			timeRange,
+		}))
+	}
 
 	// Source filter handler
-	const handleSourceFilterChange = useCallback((sources: SourceType[]) => {
+	const handleSourceFilterChange = (sources: SourceType[]) => {
+		console.log("source filter", sources)
 		setFilters((prev) => ({
 			...prev,
 			sources,
 		}));
-	}, []);
-
-	// Calculate data for charts
-	const sourceBreakdownData = generateSourceBreakdownData(filteredFeedback);
-	const suggestedActions = generateSuggestedActions(filteredFeedback);
+	}
 
 	return (
 		<div className="container mx-auto py-6 space-y-6">
@@ -176,12 +137,18 @@ const Dashboard = () => {
 					</p>
 				</div>
 
-				<RefreshIndicator
-					isAutoRefreshEnabled={isAutoRefreshEnabled}
-					lastRefreshTime={lastRefreshTime}
-					onRefreshClick={handleRefresh}
-				/>
+				{/*<RefreshIndicator*/}
+				{/*	isAutoRefreshEnabled={isAutoRefreshEnabled}*/}
+				{/*	lastRefreshTime={lastRefreshTime}*/}
+				{/*	onRefreshClick={handleRefresh}*/}
+				{/*/>*/}
 			</div>
+
+		  	<FilterSection
+				filters={filters}
+				onTimeChange={handleTimeChange}
+				onSourceFilterChange={handleSourceFilterChange}
+		  	/>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 				<Card>
@@ -199,14 +166,6 @@ const Dashboard = () => {
 					<CardHeader className="pb-2">
 						<div className="flex items-center justify-between">
 							<CardTitle>Sentiment by Source</CardTitle>
-
-							<div className="flex items-center">
-								<SourceFilter
-									selectedSources={filters.sources}
-									onSelectionChange={handleSourceFilterChange}
-									className="mr-2"
-								/>
-							</div>
 						</div>
 					</CardHeader>
 					<CardContent>
