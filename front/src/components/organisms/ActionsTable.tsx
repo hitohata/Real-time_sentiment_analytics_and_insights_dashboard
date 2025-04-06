@@ -1,15 +1,17 @@
 import React from "react";
-import { AnalysisSummaryType, SuggestedAction } from "../../types/feedback";
+import {AnalysisSummaryType, SuggestedAction, TrendSuggestionsType} from "../../types/feedback";
 import SuggestedActions from "../molecules/SuggestedActions";
 
 interface IProps {
-	analysisSummaries: AnalysisSummaryType[];
+	trendSuggestions: TrendSuggestionsType;
 }
 
-export const ActionsTable = ({ analysisSummaries }: IProps) => {
-    return <SuggestedActions actions={} />
-}
-
-const generateAction = (analysisSummaries: AnalysisSummaryType[]): SuggestedAction[] => {
-
+export const ActionsTable = ({ trendSuggestions }: IProps) => {
+    return (
+        <div>
+            <p className="pl-2 text-lg stone-400">trend</p>
+            <p className="pt-4 pb-8 pl-2 text-xl">{ trendSuggestions.trend }</p>
+            <SuggestedActions actions={ trendSuggestions.suggestions } />
+        </div>
+    )
 }

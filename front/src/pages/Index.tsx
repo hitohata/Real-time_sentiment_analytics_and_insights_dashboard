@@ -21,7 +21,7 @@ import {
 	FilterState,
 	FeedbackItem,
 	SourceType,
-	AnalysisSummaryType,
+	AnalysisSummaryType, TrendSuggestionsType,
 } from "@/types/feedback";
 import {
 	generateMockFeedbackData,
@@ -37,6 +37,7 @@ import { subDays } from "date-fns";
 import { FeedbackVolumeChart } from "../components/organisms/FeedbackVolumeChart";
 import { SentimentBarChart } from "../components/organisms/SentimentBarChart";
 import {RecentFeedback} from "../components/organisms/RecentFeedback";
+import {ActionsTable} from "../components/organisms/ActionsTable";
 
 const Dashboard = () => {
 	// State management
@@ -51,13 +52,22 @@ const Dashboard = () => {
 			start: subDays(new Date(), 30),
 			end: null,
 		},
-		sources: ["App", "Web", "Email"],
+		sources: ["app", "web", "email"],
 		isCustomTimeRange: false,
 	});
 
 	const [analysisSummary, setAnalysisSummary] = useState<AnalysisSummaryType[]>(
 		[],
 	);
+	const [trendSuggestions, setTrendSuggestions] = useState<TrendSuggestionsType>({
+		trend: "positive",
+			suggestions: [
+			{
+				action: "action",
+				reason: "reason"
+			}
+		]
+	});
 
 	// Initial data load
 	useEffect(() => {
@@ -210,7 +220,7 @@ const Dashboard = () => {
 					<CardTitle>Top 3 Suggested Actions</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<SuggestedActions actions={suggestedActions} />
+					<ActionsTable trendSuggestions={trendSuggestions} />
 				</CardContent>
 			</Card>
 

@@ -46,7 +46,7 @@ export interface FilterState {
 }
 
 /**
- * Analysis summary interface
+ * Analysis summary type
  */
 export type AnalysisSummaryType = {
 	timestamp: string;
@@ -55,3 +55,16 @@ export type AnalysisSummaryType = {
 	sentimentLabel: "positive" | "neutral" | "negative";
 	sentimentScore: number;
 };
+
+/**
+ * suggestions type
+ */
+export type TrendSuggestionsType = {
+	trend: string;
+	suggestions: SuggestionsType[];
+}
+
+export type SuggestionsType = {
+	action: string;
+	reason: string;
+}
