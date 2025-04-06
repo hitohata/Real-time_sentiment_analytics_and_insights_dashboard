@@ -1,8 +1,12 @@
+/**
+ * Feedback Datasource
+ */
+export const DataSources = ["app", "web", "email"] as const;
+export type SourceType = (typeof DataSources)[number];
+
 export type SentimentType = "positive" | "neutral" | "negative";
-export type SourceType = "App" | "Web" | "Email";
 
 export interface FeedbackItem {
-	id: string;
 	timestamp: string;
 	source: SourceType;
 	sentimentLabel: SentimentType;
@@ -40,3 +44,14 @@ export interface FilterState {
 	sources: SourceType[];
 	isCustomTimeRange: boolean;
 }
+
+/**
+ * Analysis summary interface
+ */
+export type AnalysisSummaryType = {
+	timestamp: string;
+	feedbackSource: string;
+	feedback: string;
+	sentimentLabel: "positive" | "neutral" | "negative";
+	sentimentScore: number;
+};

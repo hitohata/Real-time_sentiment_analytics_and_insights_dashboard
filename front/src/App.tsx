@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "./components/atoms/toaster";
 import { Toaster as Sonner } from "./components/atoms/sonner";
 import { TooltipProvider } from "./components/atoms/tooltip";
@@ -11,8 +12,8 @@ const queryClient = new QueryClient();
 const App = () => (
 	<QueryClientProvider client={queryClient}>
 		<TooltipProvider>
-			<Toaster />
-			<Sonner />
+			{/*<Toaster />*/}
+			{/*<Sonner />*/}
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<Index />} />

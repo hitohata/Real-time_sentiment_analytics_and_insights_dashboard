@@ -24,7 +24,7 @@ const TimeSeriesChart = ({ data, className }: TimeSeriesChartProps) => {
 			return {
 				...point,
 				formattedDate: isValid(parsedDate)
-					? format(parsedDate, "MMM dd")
+					? format(parsedDate, "MMM dd HH:mm")
 					: "Invalid date",
 			};
 		});

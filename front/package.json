@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "lint": "eslint .",
     "format": "biome format --write ./src",
     "format:check": "biome format ./src",
     "generateSchema": "orval --config ./orval.config.ts"
@@ -63,7 +64,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
     "@eslint/js": "^9.21.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.5.5",
@@ -72,12 +72,16 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.15.0",
     "lovable-tagger": "^1.1.7",
     "orval": "^7.8.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
     "typescript": "~5.7.2",
+    "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
   }
 }

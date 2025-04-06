@@ -1,3 +1,4 @@
+import React from "react";
 import { useCallback, useEffect, useState } from "react";
 import {
 	Card,
@@ -16,7 +17,12 @@ import TimeSeriesChart from "../components/molecules/TimeSeriesChart";
 import SourceBreakdownChart from "../components/molecules/SourceBreakdownChart";
 import FeedbackTable from "../components/molecules/FeedbackTable";
 import SuggestedActions from "../components/molecules/SuggestedActions";
-import { FilterState, FeedbackItem, SourceType } from "@/types/feedback";
+import {
+	FilterState,
+	FeedbackItem,
+	SourceType,
+	AnalysisSummaryType,
+} from "@/types/feedback";
 import {
 	generateMockFeedbackData,
 	generateSourceBreakdownData,
@@ -28,6 +34,9 @@ import SourceFilter from "../components/molecules/SourceFilter";
 import RefreshIndicator from "../components/molecules/RefreshIndicator";
 import { ChartBar, ChartPie } from "lucide-react";
 import { subDays } from "date-fns";
+import { FeedbackVolumeChart } from "../components/organisms/FeedbackVolumeChart";
+import { SentimentBarChart } from "../components/organisms/SentimentBarChart";
+import {RecentFeedback} from "../components/organisms/RecentFeedback";
 
 const Dashboard = () => {
 	// State management
@@ -45,6 +54,10 @@ const Dashboard = () => {
 		sources: ["App", "Web", "Email"],
 		isCustomTimeRange: false,
 	});
+
+	const [analysisSummary, setAnalysisSummary] = useState<AnalysisSummaryType[]>(
+		[],
+	);
 
 	// Initial data load
 	useEffect(() => {
@@ -140,7 +153,6 @@ const Dashboard = () => {
 	}, []);
 
 	// Calculate data for charts
-	const timeSeriesData = generateTimeSeriesData(filteredFeedback);
 	const sourceBreakdownData = generateSourceBreakdownData(filteredFeedback);
 	const suggestedActions = generateSuggestedActions(filteredFeedback);
 
@@ -166,18 +178,10 @@ const Dashboard = () => {
 					<CardHeader className="pb-2">
 						<div className="flex items-center justify-between">
 							<CardTitle>Feedback Volume Over Time</CardTitle>
-							<TimeRangeSelector
-								startDate={filters.timeRange.start}
-								endDate={filters.timeRange.end}
-								onStartDateChange={handleStartDateChange}
-								onEndDateChange={handleEndDateChange}
-								onPresetSelected={handleTimePresetSelected}
-								isCustomRange={filters.isCustomTimeRange}
-							/>
 						</div>
 					</CardHeader>
 					<CardContent>
-						<TimeSeriesChart data={timeSeriesData} />
+						<FeedbackVolumeChart analysisSummaries={analysisSummary} />
 					</CardContent>
 				</Card>
 
@@ -192,25 +196,11 @@ const Dashboard = () => {
 									onSelectionChange={handleSourceFilterChange}
 									className="mr-2"
 								/>
-
-								<Tabs
-									value={chartView}
-									onValueChange={(v) => setChartView(v as "bar" | "pie")}
-								>
-									<TabsList className="grid w-20 grid-cols-2">
-										<TabsTrigger value="bar">
-											<ChartBar className="h-4 w-4" />
-										</TabsTrigger>
-										<TabsTrigger value="pie">
-											<ChartPie className="h-4 w-4" />
-										</TabsTrigger>
-									</TabsList>
-								</Tabs>
 							</div>
 						</div>
 					</CardHeader>
 					<CardContent>
-						<SourceBreakdownChart data={sourceBreakdownData} />
+						<SentimentBarChart analysisSummaries={analysisSummary} />
 					</CardContent>
 				</Card>
 			</div>
@@ -229,12 +219,12 @@ const Dashboard = () => {
 					<div className="flex justify-between items-center">
 						<CardTitle>Recent Feedback</CardTitle>
 						<div className="text-sm text-muted-foreground">
-							Showing {filteredFeedback.length} results
+							Showing 10 results
 						</div>
 					</div>
 				</CardHeader>
 				<CardContent>
-					<FeedbackTable data={filteredFeedback.slice(0, 10)} />
+					<RecentFeedback analysisSummaries={ analysisSummary	} />
 				</CardContent>
 			</Card>
 		</div>

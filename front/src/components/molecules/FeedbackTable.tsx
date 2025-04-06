@@ -1,4 +1,4 @@
-import { FeedbackItem } from "../../types/feedback";
+import {AnalysisSummaryType, FeedbackItem} from "../../types/feedback";
 import { format } from "date-fns";
 import {
 	Table,
@@ -12,7 +12,7 @@ import SentimentBadge from "./SentimentBadge";
 import SourceBadge from "./SourceBadge";
 
 interface FeedbackTableProps {
-	data: FeedbackItem[];
+	data: AnalysisSummaryType[];
 	className?: string;
 }
 
@@ -41,12 +41,12 @@ const FeedbackTable = ({ data, className }: FeedbackTableProps) => {
 						</TableRow>
 					) : (
 						data.map((item) => (
-							<TableRow key={item.id}>
+							<TableRow key={item.timestamp}>
 								<TableCell className="font-medium">
 									{format(new Date(item.timestamp), "MMM dd, yyyy HH:mm")}
 								</TableCell>
 								<TableCell>
-									<SourceBadge source={item.source} />
+									<SourceBadge source={item.feedbackSource} />
 								</TableCell>
 								<TableCell>
 									<SentimentBadge sentiment={item.sentimentLabel} />
@@ -73,7 +73,7 @@ const FeedbackTable = ({ data, className }: FeedbackTableProps) => {
 										</span>
 									</div>
 								</TableCell>
-								<TableCell className="max-w-md truncate">{item.text}</TableCell>
+								<TableCell className="max-w-md truncate">{item.feedback}</TableCell>
 							</TableRow>
 						))
 					)}
