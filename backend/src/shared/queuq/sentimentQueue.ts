@@ -8,17 +8,17 @@ export interface ISentimentQueue {
 	 */
 	sendFeedback(feedback: RowFeedback): Promise<boolean>;
 
-    /**
-     * remove the queue item from the queue
-     * @param id
-     */
-    deleteQueue(id: string): Promise<boolean>;
+	/**
+	 * remove the queue item from the queue
+	 * @param id
+	 */
+	deleteQueue(id: string): Promise<boolean>;
 
-    /**
-     * put the queue item back to the queue
-     * @param id
-     */
-    failureQueue(id: string): Promise<boolean>;
+	/**
+	 * put the queue item back to the queue
+	 * @param id
+	 */
+	failureQueue(id: string): Promise<boolean>;
 }
 
 export class SentimentQueueMock implements ISentimentQueue {
