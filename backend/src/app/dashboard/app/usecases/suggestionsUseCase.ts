@@ -49,7 +49,7 @@ class SuggestionsUseCase
 			return err("Invalid date range. The range must be both or none.");
 
 		if (rangeFrom && rangeTo && rangeTo > rangeFrom)
-			err("Invalid date range. The range `from` must be less than `to`.");
+			err("Invalid date range. The range `from` must be greater than `to`.");
 
 		const feedbacks: string[] = [];
 
