@@ -11,7 +11,7 @@ const alertAnalysisQueue = new AlertAnalysisQueueImplementation(
 );
 
 /**
- * Thi function is triggered by the SQS queue.
+ * This function is triggered by the SQS queue.
  * This function will do the following:
  * 1. Get the message from the queue
  * 2. Send feedbacks to the AI to analyze the statement
