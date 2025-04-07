@@ -78,7 +78,7 @@ export class ApplicationStack extends cdk.Stack {
 		alertAnalysisFunction.addEnvironment(
 			"TABLE_NAME",
 			props.connectionManagementTable.tableName,
-		)
+		);
 	}
 
 	/**
