@@ -29,7 +29,7 @@ interface IProps {
  * @param timestreamRepository
  * @param aiAnalysis
  */
-class SuggestionsUseCase
+export class SuggestionsUseCase
 	implements
 		IUseCase<IProps, Promise<Result<SuggestionsResponseSchema, string>>>
 {
@@ -73,7 +73,7 @@ class SuggestionsUseCase
 	}
 }
 
-const generateSuggestionsUseCase = async () => {
+export const suggestionsUseCase = async () => {
 	if (MOCK) {
 		return new SuggestionsUseCase(
 			new MockTimestreamRepository(),
@@ -85,5 +85,3 @@ const generateSuggestionsUseCase = async () => {
 		await AIAnalysisImplementation.create(),
 	);
 };
-
-export const suggestionsUseCase = generateSuggestionsUseCase();

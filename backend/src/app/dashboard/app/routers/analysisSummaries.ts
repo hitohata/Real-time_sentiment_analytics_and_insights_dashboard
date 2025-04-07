@@ -1,5 +1,8 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { analysisSummaryUseCase } from "src/app/dashboard/app/usecases/analysisSummaryUseCase";
+import {
+	type AnalysisSummaryUseCase,
+	analysisSummaryUseCase,
+} from "src/app/dashboard/app/usecases/analysisSummaryUseCase";
 
 export const analyticsSummariesEndpoint = new OpenAPIHono();
 
@@ -108,11 +111,17 @@ const route = createRoute({
 	},
 });
 
+let analysisSummaryUseCaseInstance: AnalysisSummaryUseCase | undefined;
+
 analyticsSummariesEndpoint.openapi(route, async (c) => {
 	const { from, to } = c.req.valid("query");
 
 	try {
-		const result = await analysisSummaryUseCase.execute({
+		if (!analysisSummaryUseCaseInstance) {
+			analysisSummaryUseCaseInstance = analysisSummaryUseCase();
+		}
+
+		const result = await analysisSummaryUseCaseInstance.execute({
 			rangeFrom: from ? new Date(from) : undefined,
 			rangeTo: to ? new Date(to) : undefined,
 		});

@@ -21,7 +21,7 @@ interface IProps {
  * @param rangeTo
  * @param timestreamRepository
  */
-class AnalysisSummaryUseCase
+export class AnalysisSummaryUseCase
 	implements IUseCase<IProps, Promise<Result<FeedbackSummary[], string>>>
 {
 	constructor(private readonly timestreamRepository: ITimestreamRepository) {}
@@ -53,11 +53,9 @@ class AnalysisSummaryUseCase
 	}
 }
 
-const generateAnalysisSummaryUseCase = () => {
+export const analysisSummaryUseCase = () => {
 	if (MOCK) {
 		return new AnalysisSummaryUseCase(new MockTimestreamRepository());
 	}
 	return new AnalysisSummaryUseCase(new TimestreamRepositoryImpl());
 };
-
-export const analysisSummaryUseCase = generateAnalysisSummaryUseCase();

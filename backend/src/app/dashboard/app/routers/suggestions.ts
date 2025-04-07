@@ -1,5 +1,9 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { suggestionsUseCase } from "src/app/dashboard/app/usecases/suggestionsUseCase";
+import {
+	type SuggestionsUseCase,
+	suggestionsUseCase,
+} from "src/app/dashboard/app/usecases/suggestionsUseCase";
+import { SuggestionsResponseSchema } from "src/shared/ai/aiSettings/responseSchemas";
 
 export const suggestionEndpoint = new OpenAPIHono();
 
@@ -109,11 +113,18 @@ const route = createRoute({
 	},
 });
 
+let suggestionUseCaseInstance: SuggestionsUseCase | undefined = undefined;
+
 suggestionEndpoint.openapi(route, async (c) => {
 	const { from, to } = c.req.valid("query");
 
 	try {
-		const result = await suggestionsUseCase.execute({
+		// Initialize the use case if it is not already initialized
+		if (!suggestionUseCaseInstance) {
+			suggestionUseCaseInstance = await suggestionsUseCase();
+		}
+
+		const result = await suggestionUseCaseInstance.execute({
 			rangeFrom: from ? new Date(from) : undefined,
 			rangeTo: to ? new Date(to) : undefined,
 		});
