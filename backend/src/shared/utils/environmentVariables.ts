@@ -44,4 +44,6 @@ export const TABLE_NAME = process.env.TABLE_NAME || "";
 /**
  * Websocket endpoint
  */
-export const WEBSOCKET_ENDPOINT = process.env.WEBSOCKET_ENDPOINT || "";
+export const WEBSOCKET_ENDPOINT = (
+	process.env.WEBSOCKET_ENDPOINT || ""
+).replace("wss", "https"); // change protocol from wws to https

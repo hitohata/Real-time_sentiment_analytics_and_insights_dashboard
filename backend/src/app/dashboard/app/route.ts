@@ -1,10 +1,13 @@
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { cors } from "hono/cors";
 import { analyticsSummariesEndpoint } from "./routers/analysisSummaries";
 import { feedbackEndpoint } from "./routers/feedbacks";
 import { suggestionEndpoint } from "./routers/suggestions";
 
 export const app = new OpenAPIHono();
+
+app.use("*", cors());
 
 app.route("/feedbacks", feedbackEndpoint);
 app.route("/suggestions", suggestionEndpoint);

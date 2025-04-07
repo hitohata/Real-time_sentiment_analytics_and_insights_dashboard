@@ -1,5 +1,6 @@
 import { serve } from "@hono/node-server";
 import { handle } from "hono/aws-lambda";
+import { cors } from "hono/cors";
 import { MOCK } from "src/shared/utils/environmentVariables";
 import { app } from "./app/route";
 

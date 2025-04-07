@@ -40,6 +40,7 @@ export class WebsocketClientImpl implements INotification {
 	/**
 	 * send notification to websocket channel
 	 * @param channelId
+	 * @param message
 	 */
 	private async postToConnection(
 		channelId: string,
@@ -51,6 +52,10 @@ export class WebsocketClientImpl implements INotification {
 				JSON.stringify({ action: "notification", message }),
 			),
 		};
+
+		console.log("endpoint", WEBSOCKET_ENDPOINT);
+		console.log("postToConnection", input);
+
 		await this.apiGatewayClient.send(new PostToConnectionCommand(input));
 	}
 
