@@ -43,7 +43,6 @@ const Dashboard = () => {
       socket.current.onmessage = (event) => {
 		  // add an alert to the list
           const data = JSON.parse(event.data);
-		  console.log("websocket data", data)
 		  setAlerts((prevAlerts) => [...prevAlerts, data.message]);
       };
       socket.current.onclose = () => {
@@ -124,7 +123,6 @@ const Dashboard = () => {
 	// Loading and refreshing data
 	const loadData = async () => {
 		// if time is not set
-		console.log("time range", timeRange)
 		if (!(timeRange.from && timeRange.to)) {
 			getFeedbackSummaries().then((result) => {
 				if (result.ok) {
