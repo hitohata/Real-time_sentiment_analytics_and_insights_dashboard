@@ -70,7 +70,7 @@ export class ApplicationStack extends cdk.Stack {
 		props.websocketGateway.grantManageConnections(alertAnalysisFunction);
 		alertAnalysisFunction.addEnvironment(
 			"WEBSOCKET_ENDPOINT",
-			props.websocketGateway.apiEndpoint,
+			`${props.websocketGateway.apiEndpoint}/prod`,
 		);
 
 		// add permission to read the DynamoDB

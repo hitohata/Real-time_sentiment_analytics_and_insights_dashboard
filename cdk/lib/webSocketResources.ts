@@ -3,7 +3,6 @@ import * as apigatewayv2 from "aws-cdk-lib/aws-apigatewayv2";
 import * as apigatewayv2_integrations from "aws-cdk-lib/aws-apigatewayv2-integrations";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import type * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as apigw from "aws-cdk-lib/aws-apigateway";
 import * as nodeLambda from "aws-cdk-lib/aws-lambda-nodejs";
 import type { Construct } from "constructs";
 import * as path from "node:path";
@@ -63,6 +62,8 @@ export class WebSocketApiStack extends cdk.Stack {
 			stageName: "prod",
 			autoDeploy: true,
 		});
+
+		this.websocketGateway = webSocketApi;
 
 		new cdk.CfnOutput(this, "WebSocketApiEndpoint", {
 			value: `${webSocketApi.apiEndpoint}/prod`,
