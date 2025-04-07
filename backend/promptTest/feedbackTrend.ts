@@ -106,7 +106,7 @@ const dummyFeedbacks: string[] = [
 console.log("Starting trend analysis...");
 console.time("statement-trend-analysis");
 
-const client = new AIAnalysisImplementation();
+const client = AIAnalysisImplementation.mock();
 const result = client.feedbackTrendAnalysis(dummyFeedbacks);
 
 result.then((res) => {

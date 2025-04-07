@@ -63,6 +63,13 @@ export class AIAnalysisImplementation implements IAIAnalysis {
 		return new AIAnalysisImplementation(key);
 	}
 
+	/**
+	 * This is for local environment this class.
+	 */
+	static mock(): AIAnalysisImplementation {
+		return new AIAnalysisImplementation(OPENAI_API_KEY_MOCK);
+	}
+
 	async sentimentAnalysis(
 		feedbacks: RowFeedback[],
 	): Promise<FeedbackSentiment[]> {

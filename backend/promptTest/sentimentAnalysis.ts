@@ -68,7 +68,7 @@ console.log("Starting statement analysis...");
 console.time("statement-analysis");
 
 // Call the aiAnalysis function with dummy feedbacks
-const client = new AIAnalysisImplementation();
+const client = AIAnalysisImplementation.mock();
 const result = client.sentimentAnalysis(dummyFeedbacks);
 
 result.then((res) => {
