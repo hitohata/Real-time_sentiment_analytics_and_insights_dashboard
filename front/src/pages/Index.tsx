@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import { useCallback, useEffect, useState } from "react";
 import {
 	Card,
@@ -33,6 +33,28 @@ const Dashboard = () => {
 	const [filteredAnalysisSummaries, setFilteredAnalysisSummaries] = useState<AnalysisSummaryType[]>([]);
 
 	const [trendSuggestions, setTrendSuggestions] = useState<TrendSuggestionsType | null>(null);
+
+	const socket = useRef(null);
+
+	// Websocket
+  	useEffect(() => {
+      socket.current = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
+
+      socket.current.onmessage = (event) => {
+		  // add an alert to the list
+          const data = JSON.parse(event.data);
+		  console.log("websocket data", data)
+		  setAlerts((prevAlerts) => [...prevAlerts, data.message]);
+      };
+      socket.current.onclose = () => {
+          console.log('WebSocket connection closed');
+      };
+      return () => {
+          if (socket.current) {
+              socket.current.close();
+          }
+      };
+  }, [])
 
 	// Initial data load
 	useEffect(() => {
