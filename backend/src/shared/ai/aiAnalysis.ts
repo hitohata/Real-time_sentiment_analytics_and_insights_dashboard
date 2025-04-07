@@ -1,6 +1,10 @@
 import OpenAI from "openai";
 import { OPENAI_MODEL } from "src/shared/utils/constants";
-import {MOCK, OPENAI_API_KEY_MOCK, openAiKey} from "src/shared/utils/environmentVariables";
+import {
+	MOCK,
+	OPENAI_API_KEY_MOCK,
+	openAiKey,
+} from "src/shared/utils/environmentVariables";
 import type {
 	FeedbackSentiment,
 	RowFeedback,
@@ -40,7 +44,6 @@ export class AIAnalysisImplementation implements IAIAnalysis {
 	private readonly client: OpenAI;
 
 	private constructor(apiKey: string) {
-
 		this.client = new OpenAI({
 			apiKey,
 		});

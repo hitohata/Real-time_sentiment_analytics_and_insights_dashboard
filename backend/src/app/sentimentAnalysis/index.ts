@@ -1,9 +1,12 @@
 import type { SQSBatchResponse, SQSEvent } from "aws-lambda";
+import { AIAnalysisImplementation } from "src/shared/ai/aiAnalysis";
 import { AlertAnalysisQueueImplementation } from "src/shared/queue/alertAnalysisQueue";
 import { ALERT_ANALYSIS_QUEUE_URL } from "src/shared/utils/environmentVariables";
-import type {FeedbackSentiment, RowFeedback} from "src/shared/utils/sharedTypes";
-import {AIAnalysisImplementation} from "src/shared/ai/aiAnalysis";
-import {late} from "zod";
+import type {
+	FeedbackSentiment,
+	RowFeedback,
+} from "src/shared/utils/sharedTypes";
+import { late } from "zod";
 
 /**
  * Alert analysis queue client
@@ -28,7 +31,6 @@ let aiAnalysis: AIAnalysisImplementation | null = null;
  * @param event
  */
 export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
-
 	const feedbacks = event.Records.map((record) =>
 		JSON.parse(record.body),
 	) as RowFeedback[];
@@ -44,10 +46,14 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 		const latestTimeStamp = getLatestTimestamp(sentiments);
 
 		if (!latestTimeStamp) {
-			throw new Error("No latest timestamp found. The AI generation might failed.");
+			throw new Error(
+				"No latest timestamp found. The AI generation may have failed.",
+			);
 		}
 
-		const res = await alertAnalysisQueue.requestAnalysis(new Date(latestTimeStamp));
+		const res = await alertAnalysisQueue.requestAnalysis(
+			new Date(latestTimeStamp),
+		);
 
 		return { batchItemFailures: [] };
 	} catch (e) {

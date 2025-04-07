@@ -1,4 +1,7 @@
-import {GetSecretValueCommand, SecretsManagerClient} from "@aws-sdk/client-secrets-manager";
+import {
+	GetSecretValueCommand,
+	SecretsManagerClient,
+} from "@aws-sdk/client-secrets-manager";
 
 export const SENTIMENT_QUEUE_URL = process.env.SENTIMENT_QUEUE_URL || "";
 export const ALERT_ANALYSIS_QUEUE_URL =
@@ -14,7 +17,7 @@ export const TIMRESTREAM_TABLE_NAME = process.env.TIMRESTREAM_TABLE_NAME || "";
 export const MOCK = !process.env.AWS_LAMBDA_FUNCTION_NAME;
 
 /**
- * This is for to get a key from Secret Manager
+ * This is to get a key from Secret Manager
  */
 export const openAiKey = async (): Promise<string> => {
 	const client = new SecretsManagerClient();
@@ -26,7 +29,7 @@ export const openAiKey = async (): Promise<string> => {
 
 	// biome-ignore lint/style/noNonNullAssertion: <explanation>
 	return JSON.parse(res.SecretString!).openAiKey;
-}
+};
 
 /**
  * This is OpenAI Key for local development.
