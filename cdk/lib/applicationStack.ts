@@ -277,8 +277,8 @@ export class ApplicationStack extends cdk.Stack {
 	}
 
 	/**
-	 * create a secret manager for the  API keys
-	 * This function also add a permission to the lambda function to access the secret manager
+	 * Create a secret manager for the API keys
+	 * This function also adds a permission to the lambda function to access the secret manager.
 	 * @private
 	 */
 	private secretKeyManager(lambdaFunctions: NodejsFunction[]) {
