@@ -38,8 +38,6 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 			return { batchItemFailures: [] };
 		}
 
-		console.log("negative feedbacks", negativeFeedbacks);
-
 		await notificationClients.sendNotification(`
 			Negative feedback is increasing!
 			${negativeFeedbacks.length} negative feedbacks were found
