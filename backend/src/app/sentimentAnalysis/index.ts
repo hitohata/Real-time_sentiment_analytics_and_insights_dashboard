@@ -60,7 +60,7 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 			);
 		}
 
-		const res = await alertAnalysisQueue.requestAnalysis(
+		await alertAnalysisQueue.requestAnalysis(
 			new Date(latestTimeStamp),
 		);
 
