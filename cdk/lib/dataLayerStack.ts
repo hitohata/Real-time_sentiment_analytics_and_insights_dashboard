@@ -11,7 +11,7 @@ export class DataLayerStack extends cdk.Stack {
 	public timestreamDatabaseName: string;
 	public timestreamTableName: string;
 	public timestreamTable: timestream.CfnTable;
-	// public dynamoTable: dynamodb.Table;
+	public connectionManageTable: dynamodb.Table;
 
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {
 		super(scope, id, props);
@@ -20,7 +20,7 @@ export class DataLayerStack extends cdk.Stack {
 		this.timestreamTableName = "RealTimeInsightsTable";
 
 		this.timestreamDatabaseSettings();
-		// this.statementAnalysisTableSettings();
+		this.connectionManageSettings();
 	}
 
 	/**
@@ -53,16 +53,18 @@ export class DataLayerStack extends cdk.Stack {
 	}
 
 	/**
-	 * create DynamoDB table for statement analysis
+	 * create DynamoDB table for connection
 	 * @private
 	 */
-	// private statementAnalysisTableSettings() {
-	// 	this.dynamoTable = new dynamodb.Table(this, "DynamoTable", {
-	// 		tableName: "RealTimeInsightsTable",
-	// 		partitionKey: { name: "Statement", type: dynamodb.AttributeType.STRING },
-	// 		sortKey: { name: "Timestamp", type: dynamodb.AttributeType.STRING },
-	// 		billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-	// 		removalPolicy: cdk.RemovalPolicy.DESTROY,
-	// 	});
-	// }
+	private connectionManageSettings() {
+		this.connectionManageTable = new dynamodb.Table(this, "DynamoTable", {
+			tableName: "RealTimeInsightsConnectionManagementTable",
+			partitionKey: {
+				name: "connectionId",
+				type: dynamodb.AttributeType.STRING,
+			},
+			billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+			removalPolicy: cdk.RemovalPolicy.DESTROY,
+		});
+	}
 }
