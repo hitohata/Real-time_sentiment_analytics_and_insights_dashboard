@@ -8,11 +8,15 @@ import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as path from "node:path";
 import type { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
+import type * as apigatewayv2 from "aws-cdk-lib/aws-apigatewayv2";
+import type * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface IProps extends cdk.StackProps {
 	timestreamTable: cdk.aws_timestream.CfnTable;
 	timestreamDatabaseName: string;
 	timestreamTableName: string;
+	websocketGateway: apigatewayv2.WebSocketApi;
+	connectionManagementTable: dynamodb.Table;
 }
 
 export class ApplicationStack extends cdk.Stack {
@@ -61,6 +65,20 @@ export class ApplicationStack extends cdk.Stack {
 			sentimentFunction,
 			alertAnalysisFunction,
 		]);
+
+		// Add authorization to put message to the websocket endpoint
+		props.websocketGateway.grantManageConnections(alertAnalysisFunction);
+		alertAnalysisFunction.addEnvironment(
+			"WEBSOCKET_ENDPOINT",
+			props.websocketGateway.apiEndpoint,
+		);
+
+		// add permission to read the DynamoDB
+		props.connectionManagementTable.grantReadData(alertAnalysisFunction);
+		alertAnalysisFunction.addEnvironment(
+			"TABLE_NAME",
+			props.connectionManagementTable.tableName,
+		);
 	}
 
 	/**

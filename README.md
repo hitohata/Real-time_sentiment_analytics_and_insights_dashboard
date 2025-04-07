@@ -109,11 +109,12 @@ The suggestions engine extracts the most recent 50–100 feedback entries and ge
 After the feedback is analyzed, the latest timestream data is sent to the AlertAnalyticsQueue.
 Then, the AlertAnalysisFunction is called.
 The function retrieves 5 minutes of window data from the latest data from Timestream and checks if there are more than 5 negative sentiments.
+If the condition is met, the function sends an alert to the user via Discord webhook and frontend via web socket.
 
 > [!NOTE]
 > The reason for avoiding email (SMS) is the deadline.
 > To send an email, the users need to ask the AWS. It can take several days, depending on the situation. 
-> To avoid this, the alert is sent via Discord webhook and WhatsApp.
+> To avoid this, the alert is sent via Discord webhook and web socket.
 
 #### API Layer
 
@@ -122,7 +123,8 @@ The API is built using AWS Lambda functions.
 This layer handles the feedbacks and returns the data to the frontend.
 The feedback is sent to the SQS queue, which is then processed by the Lambda function. (see the Sentiment Analysis Pipeline section above)
 
-> [!NOTE]
-> To keep this system simple, the API Gateway and Lambda function are used to handle the feedbacks and requests from frontend users.
-> 
-> If the real-time is more important, it should use WebSocket to push data from the backend.
+This application require the pushing of the data to the frontend.
+To do this, webs socket API Gateway is also used.
+Once connection is established, the connection ID is stored in DynamoDB.
+Using this connection ID, the backend can push data to the frontend.
+When the connection is closed, the connection ID is removed from DynamoDB.

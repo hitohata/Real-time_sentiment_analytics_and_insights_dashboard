@@ -2,9 +2,10 @@
 
 This project consists of three stacks:
 
-# 1. **Frontend**: The frontend stack contains the S3 bucket and CloudFront distribution for the frontend.
-# 2. **DataLayer**: The DB layer stack.
-# 3. **Backend(application)**: The backend stack contains the Lambda functions and SQS queue for processing feedback.
+1. **Frontend**: The frontend stack contains the S3 bucket and CloudFront distribution for the frontend.
+2. **DataLayer**: The DB layer stack.
+3. **Backend(application)**: The backend stack contains the Lambda functions and SQS queue for processing feedback.
+4. **WebSocketResources**: The WebSocket related resources stack.
 
 The reason for separating the stacks is to allow for easier management and deployment of the different components of the application.
 Especially, the DB layer won't be changed often, so it is separated from the other stacks.
