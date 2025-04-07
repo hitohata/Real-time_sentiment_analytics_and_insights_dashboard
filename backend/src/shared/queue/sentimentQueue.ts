@@ -4,6 +4,7 @@ import {
 	SendMessageCommand,
 } from "@aws-sdk/client-sqs";
 import type { RowFeedback } from "src/shared/utils/sharedTypes";
+import { v7 } from "uuid";
 
 export interface ISentimentQueue {
 	/**
@@ -28,6 +29,7 @@ export class SentimentQueueImpl implements ISentimentQueue {
 	}
 	async sendFeedback(feedback: RowFeedback): Promise<void> {
 		const command = new SendMessageCommand({
+			MessageGroupId: v7(),
 			QueueUrl: this.queueUrl,
 			MessageBody: JSON.stringify(feedback),
 		});

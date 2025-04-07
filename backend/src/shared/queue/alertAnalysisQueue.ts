@@ -4,6 +4,7 @@ import {
 	SendMessageCommand,
 } from "@aws-sdk/client-sqs";
 import type { AlerterQueueType } from "src/shared/utils/sharedTypes";
+import { v7 } from "uuid";
 
 export interface IAlertAnalysisQueue {
 	/**
@@ -32,6 +33,7 @@ export class AlertAnalysisQueueImplementation implements IAlertAnalysisQueue {
 		const command = new SendMessageCommand({
 			QueueUrl: this.queueUrl,
 			MessageBody: JSON.stringify(body),
+			MessageGroupId: v7(),
 		});
 
 		await this.sqsClient.send(command);

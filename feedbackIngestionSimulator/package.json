@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "mock": "tsx src/index.ts mock",
-    "positive": "tsx src/index.ts positive",
-    "neutral": "tsx src/index.ts neutral",
-    "negative": "tsx src/index.ts negative",
+    "mock": "tsx --env-file=.env src/index.ts mock",
+    "positive": "tsx --env-file=.env src/index.ts positive",
+    "neutral": "tsx --env-file=.env src/index.ts neutral",
+    "negative": "tsx --env-file=.env src/index.ts negative",
     "debug": "DEBUG=true tsx src/index.ts mock",
     "format": "biome check --write ./src"
   },

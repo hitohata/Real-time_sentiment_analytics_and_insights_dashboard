@@ -10,15 +10,23 @@ import type { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 
 interface IProps extends cdk.StackProps {
-	timestreamTable: cdk.aws_timestream.CfnTable;
+	timestreamTable: cdk.aws_timestream.CfnTable
+	timestreamDatabaseName: string;
+	timestreamTableName: string;
 }
 
 export class ApplicationStack extends cdk.Stack {
+
 	private readonly timestreamTable: cdk.aws_timestream.CfnTable;
+	private readonly timestreamTableName: string;
+	private readonly timestreamDatabaseName: string;
+
 	constructor(scope: Construct, id: string, props: IProps) {
 		super(scope, id, props);
 
 		this.timestreamTable = props.timestreamTable;
+		this.timestreamDatabaseName = props.timestreamDatabaseName;
+		this.timestreamTableName = props.timestreamTableName;
 
 		// Create the Lambda function for Dashboard
 		const dashboardFunction = this.dashboardFunctionSettings();
@@ -61,6 +69,10 @@ export class ApplicationStack extends cdk.Stack {
 			handler: "handler",
 			entry: path.join(__dirname, "../../backend/src/app/dashboard/index.ts"),
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
+			environment: {
+				TIMRESTREAM_DATABASE_NAME: this.timestreamDatabaseName,
+				TIMRESTREAM_TABLE_NAME: this.timestreamTableName
+			}
 		});
 	}
 	/**
@@ -78,6 +90,10 @@ export class ApplicationStack extends cdk.Stack {
 				"../../backend/src/app/sentimentAnalysis/index.ts",
 			),
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
+			environment: {
+				TIMRESTREAM_DATABASE_NAME: this.timestreamDatabaseName,
+				TIMRESTREAM_TABLE_NAME: this.timestreamTableName
+			}
 		});
 	}
 
@@ -92,6 +108,10 @@ export class ApplicationStack extends cdk.Stack {
 				"../../backend/src/app/alertAnalysis/index.ts",
 			),
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
+			environment: {
+				TIMRESTREAM_DATABASE_NAME: this.timestreamDatabaseName,
+				TIMRESTREAM_TABLE_NAME: this.timestreamTableName
+			}
 		});
 	}
 
@@ -139,6 +159,7 @@ export class ApplicationStack extends cdk.Stack {
 
 		// Grant the producer function permissions to send messages to the SQS queue
 		sentimentQueue.grantConsumeMessages(consumerFunction);
+		sentimentQueue.grantSendMessages(producerFunction);
 
 		// Add an environment variable to the producer function
 		producerFunction.addEnvironment(
@@ -166,7 +187,6 @@ export class ApplicationStack extends cdk.Stack {
 			queueName: "AlertQueue.fifo",
 			visibilityTimeout: cdk.Duration.seconds(60),
 			fifo: true,
-
 			contentBasedDeduplication: true,
 		});
 
@@ -179,10 +199,11 @@ export class ApplicationStack extends cdk.Stack {
 
 		// Grant the producer function permissions to send messages to the SQS queue
 		alertAnalysisQueue.grantConsumeMessages(consumerFunction);
+		alertAnalysisQueue.grantSendMessages(producerFunction);
 
 		// Add an environment variable to the producer function
 		producerFunction.addEnvironment(
-			"ALERT_ANALYTICS_QUEUE_URL",
+			"ALERT_ANALYSIS_QUEUE_URL",
 			alertAnalysisQueue.queueUrl,
 		);
 	}
