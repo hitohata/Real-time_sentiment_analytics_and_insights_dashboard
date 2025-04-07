@@ -75,6 +75,10 @@ export class ApplicationStack extends cdk.Stack {
 
 		// add permission to read the DynamoDB
 		props.connectionManagementTable.grantReadData(alertAnalysisFunction);
+		alertAnalysisFunction.addEnvironment(
+			"TABLE_NAME",
+			props.connectionManagementTable.tableName,
+		)
 	}
 
 	/**

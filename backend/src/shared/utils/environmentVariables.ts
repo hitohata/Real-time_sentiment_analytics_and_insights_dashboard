@@ -35,3 +35,14 @@ export const openAiKey = async (): Promise<string> => {
  * This is OpenAI Key for local development.
  */
 export const OPENAI_API_KEY_MOCK = process.env.OPENAI_API_KEY || "";
+
+/**
+ * DynamoDB table name
+ */
+export const TABLE_NAME = process.env.TABLE_NAME || "";
+
+/**
+ * Websocket endpoint
+ */
+export const WEBSOCKET_ENDPOINT = process.env.WEBSOCKET_ENDPOINT || "";
+
