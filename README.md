@@ -28,7 +28,7 @@
 This project uses OpenAI's API.
 To use the OpenAI API, you need to set up an account and obtain an API key.
 
-### Disocrod Webhook URL
+### Discord Webhook URL
 
 This project uses Discord's webhook to send alerts.([see](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks))
 
@@ -82,7 +82,7 @@ Each name must be the following:
 - `openaiAiKey`: The OpenAI API key.
 - `discordUrl`: The Discord webhook URL.
 
-Note that the Secret Manage is created when you run the cdk command.
+Note that the Secret Manager is created when you run the cdk command.
 The Secret Manager's name is `RealTimeInsightsSecret`.
 
 4. Set up the frontend.
