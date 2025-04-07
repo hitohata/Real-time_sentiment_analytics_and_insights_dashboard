@@ -1,4 +1,10 @@
+import {
+	DeleteMessageCommand,
+	SQSClient,
+	SendMessageCommand,
+} from "@aws-sdk/client-sqs";
 import type { RowFeedback } from "src/shared/utils/sharedTypes";
+import { v7 } from "uuid";
 
 export interface ISentimentQueue {
 	/**
@@ -6,48 +12,47 @@ export interface ISentimentQueue {
 	 * @param feedback
 	 * @returns Promise<bool> true if the feedback was successfully added to the queue, false otherwise
 	 */
-	sendFeedback(feedback: RowFeedback): Promise<boolean>;
+	sendFeedback(feedback: RowFeedback): Promise<void>;
 
 	/**
 	 * remove the queue item from the queue
-	 * @param id
+	 * This is takes a receipt handle
+	 * @param receiptHandle
 	 */
-	deleteQueue(id: string): Promise<boolean>;
-
-	/**
-	 * put the queue item back to the queue
-	 * @param id
-	 */
-	failureQueue(id: string): Promise<boolean>;
+	deleteQueue(receiptHandle: string): Promise<void>;
 }
 
 export class SentimentQueueImpl implements ISentimentQueue {
-	constructor(private queueUrl: string) {}
-	async sendFeedback(feedback: RowFeedback): Promise<boolean> {
-		// TODO: Implement the logic to send the feedback to the queue
-		return true;
+	private readonly sqsClient: SQSClient;
+	constructor(private queueUrl: string) {
+		this.sqsClient = new SQSClient({});
+	}
+	async sendFeedback(feedback: RowFeedback): Promise<void> {
+		const command = new SendMessageCommand({
+			MessageGroupId: v7(),
+			QueueUrl: this.queueUrl,
+			MessageBody: JSON.stringify(feedback),
+		});
+
+		await this.sqsClient.send(command);
 	}
 
-	deleteQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
-	}
-
-	failureQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
+	async deleteQueue(receiptHandle: string): Promise<void> {
+		const command = new DeleteMessageCommand({
+			QueueUrl: this.queueUrl,
+			ReceiptHandle: receiptHandle,
+		});
+		await this.sqsClient.send(command);
 	}
 }
 
 export class MockSentimentQueue implements ISentimentQueue {
-	async sendFeedback(feedback: RowFeedback): Promise<boolean> {
+	async sendFeedback(feedback: RowFeedback): Promise<void> {
 		console.log("received feedback", feedback);
-		return true;
+		return Promise.resolve(undefined);
 	}
 
-	deleteQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
-	}
-
-	failureQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
+	deleteQueue(receiptHandle: string): Promise<void> {
+		return Promise.resolve(undefined);
 	}
 }

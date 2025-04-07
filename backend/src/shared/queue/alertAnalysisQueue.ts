@@ -1,49 +1,59 @@
+import {
+	DeleteMessageCommand,
+	SQSClient,
+	SendMessageCommand,
+} from "@aws-sdk/client-sqs";
+import type { AlerterQueueType } from "src/shared/utils/sharedTypes";
+import { v7 } from "uuid";
+
 export interface IAlertAnalysisQueue {
 	/**
 	 * put the datetime that is the starting point of time to analyze the feedbacks
 	 * @param datetime
 	 */
-	requestAnalysis(datetime: Date): Promise<boolean>;
+	requestAnalysis(datetime: Date): Promise<void>;
 
 	/**
 	 * remove the queue item from the queue
-	 * @param id
+	 * @param receiptHandle
 	 */
-	deleteQueue(id: string): Promise<boolean>;
-
-	/**
-	 * put the queue item back to the queue
-	 * @param id
-	 */
-	failureQueue(id: string): Promise<boolean>;
+	deleteQueue(receiptHandle: string): Promise<void>;
 }
 
 export class AlertAnalysisQueueImplementation implements IAlertAnalysisQueue {
-	constructor(private queueUrl: string) {}
-	async requestAnalysis(datetime: Date): Promise<boolean> {
-		// TODO: Implement the logic
-		return true;
+	private readonly sqsClient: SQSClient;
+	constructor(private queueUrl: string) {
+		this.sqsClient = new SQSClient({});
+	}
+	async requestAnalysis(datetime: Date): Promise<void> {
+		const body: AlerterQueueType = {
+			date: datetime.toISOString(),
+		};
+
+		const command = new SendMessageCommand({
+			QueueUrl: this.queueUrl,
+			MessageBody: JSON.stringify(body),
+			MessageGroupId: v7(),
+		});
+
+		await this.sqsClient.send(command);
 	}
 
-	deleteQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
-	}
-
-	failureQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
+	async deleteQueue(receiptHandle: string): Promise<void> {
+		const command = new DeleteMessageCommand({
+			QueueUrl: this.queueUrl,
+			ReceiptHandle: receiptHandle,
+		});
+		await this.sqsClient.send(command);
 	}
 }
 
 export class MockAlertAnalysisQueue implements IAlertAnalysisQueue {
-	async requestAnalysis(datetime: Date): Promise<boolean> {
-		return true;
+	async requestAnalysis(datetime: Date): Promise<void> {
+		return Promise.resolve();
 	}
 
-	deleteQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
-	}
-
-	failureQueue(id: string): Promise<boolean> {
-		return Promise.resolve(false);
+	async deleteQueue(receiptHandle: string): Promise<void> {
+		return Promise.resolve();
 	}
 }

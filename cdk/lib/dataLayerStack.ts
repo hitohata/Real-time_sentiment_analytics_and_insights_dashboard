@@ -8,15 +8,19 @@ import { RemovalPolicy } from "aws-cdk-lib";
  * This stack creates Timestream and DynamoDB instances.
  */
 export class DataLayerStack extends cdk.Stack {
-	public timestreamDatabase: timestream.CfnDatabase;
+	public timestreamDatabaseName: string;
+	public timestreamTableName: string;
 	public timestreamTable: timestream.CfnTable;
-	public dynamoTable: dynamodb.Table;
+	// public dynamoTable: dynamodb.Table;
 
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {
 		super(scope, id, props);
 
+		this.timestreamDatabaseName = "RealTimeInsightsDB";
+		this.timestreamTableName = "RealTimeInsightsTable";
+
 		this.timestreamDatabaseSettings();
-		this.statementAnalysisTableSettings();
+		// this.statementAnalysisTableSettings();
 	}
 
 	/**
@@ -24,27 +28,27 @@ export class DataLayerStack extends cdk.Stack {
 	 * @private
 	 */
 	private timestreamDatabaseSettings() {
-		const timestreamDatabaseName = "RealTimeInsightsDB";
+		const timestreamDatabaseName = this.timestreamDatabaseName;
 
 		// Create a Timestream database
-		this.timestreamDatabase = new timestream.CfnDatabase(
+		const timestreamDatabase = new timestream.CfnDatabase(
 			this,
 			"TimestreamDatabase",
 			{
 				databaseName: timestreamDatabaseName,
 			},
 		);
-		this.timestreamDatabase.applyRemovalPolicy(RemovalPolicy.DESTROY);
+		timestreamDatabase.applyRemovalPolicy(RemovalPolicy.DESTROY);
 
 		this.timestreamTable = new timestream.CfnTable(this, "TimestreamTable", {
 			databaseName: timestreamDatabaseName,
-			tableName: "RealTimeInsightsTable",
+			tableName: this.timestreamTableName,
 			retentionProperties: {
 				memoryStoreRetentionPeriodInHours: "1",
 				magneticStoreRetentionPeriodInDays: "1",
 			},
 		});
-		this.timestreamTable.node.addDependency(this.timestreamDatabase);
+		this.timestreamTable.node.addDependency(timestreamDatabase);
 		this.timestreamTable.applyRemovalPolicy(RemovalPolicy.DESTROY);
 	}
 
@@ -52,13 +56,13 @@ export class DataLayerStack extends cdk.Stack {
 	 * create DynamoDB table for statement analysis
 	 * @private
 	 */
-	private statementAnalysisTableSettings() {
-		this.dynamoTable = new dynamodb.Table(this, "DynamoTable", {
-			tableName: "RealTimeInsightsTable",
-			partitionKey: { name: "Statement", type: dynamodb.AttributeType.STRING },
-			sortKey: { name: "Timestamp", type: dynamodb.AttributeType.STRING },
-			billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-			removalPolicy: cdk.RemovalPolicy.DESTROY,
-		});
-	}
+	// private statementAnalysisTableSettings() {
+	// 	this.dynamoTable = new dynamodb.Table(this, "DynamoTable", {
+	// 		tableName: "RealTimeInsightsTable",
+	// 		partitionKey: { name: "Statement", type: dynamodb.AttributeType.STRING },
+	// 		sortKey: { name: "Timestamp", type: dynamodb.AttributeType.STRING },
+	// 		billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+	// 		removalPolicy: cdk.RemovalPolicy.DESTROY,
+	// 	});
+	// }
 }
