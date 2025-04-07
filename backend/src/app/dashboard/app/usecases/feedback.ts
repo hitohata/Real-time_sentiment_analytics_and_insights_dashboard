@@ -9,7 +9,7 @@ import {
 } from "src/shared/utils/environmentVariables";
 import type { IUseCase, RowFeedback } from "src/shared/utils/sharedTypes";
 
-class FeedbackUseCase implements IUseCase<RowFeedback, void> {
+export class FeedbackUseCase implements IUseCase<RowFeedback, void> {
 	constructor(private readonly sentimentQueue: ISentimentQueue) {}
 
 	async execute(input: RowFeedback): Promise<void> {
@@ -17,11 +17,9 @@ class FeedbackUseCase implements IUseCase<RowFeedback, void> {
 	}
 }
 
-const generateFeedbackUseCase = () => {
+export const feedbackUseCase = () => {
 	if (MOCK) {
 		return new FeedbackUseCase(new MockSentimentQueue());
 	}
 	return new FeedbackUseCase(new SentimentQueueImpl(SENTIMENT_QUEUE_URL));
 };
-
-export const feedbackUseCase = generateFeedbackUseCase();

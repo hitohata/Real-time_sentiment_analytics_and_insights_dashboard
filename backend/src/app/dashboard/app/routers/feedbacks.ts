@@ -1,5 +1,8 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import { feedbackUseCase } from "src/app/dashboard/app/usecases/feedback";
+import {
+	type FeedbackUseCase,
+	feedbackUseCase,
+} from "src/app/dashboard/app/usecases/feedback";
 
 /**
  * The feedback endpoint.
@@ -104,11 +107,18 @@ const route = createRoute({
 	},
 });
 
+let feedbackUseCaseInstance: FeedbackUseCase | undefined = undefined;
+
 feedbackEndpoint.openapi(route, async (c) => {
 	const body = c.req.valid("json");
 
 	try {
-		await feedbackUseCase.execute(body);
+		// if the feedbackUseCase is not created, create it
+		if (!feedbackUseCaseInstance) {
+			feedbackUseCaseInstance = feedbackUseCase();
+		}
+
+		await feedbackUseCaseInstance.execute(body);
 
 		return c.json(
 			{
