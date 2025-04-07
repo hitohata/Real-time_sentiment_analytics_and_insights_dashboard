@@ -19,8 +19,7 @@
 
 ### Environment
 
-
-* Node.js > 20
+* Node.js > 22
 * Docker
 * AWS CLI
 
@@ -28,6 +27,10 @@
 
 This project uses OpenAI's API.
 To use the OpenAI API, you need to set up an account and obtain an API key.
+
+### Discord Webhook URL
+
+This project uses Discord's webhook to send alerts.([see](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks))
 
 ### AWS
 
@@ -38,6 +41,10 @@ To run AWS CDK, it is required to set up the AWS CLI and credentials.
 https://docs.aws.amazon.com/cdk/v2/guide/prerequisites.html#prerequisites-cli
 
 ## Deploy
+
+> [!NOTE]
+> This repository has multiple projects.
+> Run `npm ci` in each project to install the dependencies when you need.
 
 The deployment process is done under the `/cdk` directory.
 If nothing is mentioned, the following operations are within that directory:
@@ -57,12 +64,40 @@ npm run cdk deploy "*"
 ```
 
 The API Gateway URL and CloudFront URL will be printed in the console.
-So, take note of them.
+You must keep for the next step.:
+
+- The API Gateway URL
+-  Websocket URL
 
 ![image](./img/cdk-output-image.jpg)
 
 > [!TIP]
 > To destroy the environment, run `npm run cdk destroy "*"`.
+
+3. Set secret values to the Secret Manager.
+
+The OpenAI API key and Discord webhook URL are set in the AWS Secret Manager in the AWS console.
+Each name must be the following:
+
+- `openaiAiKey`: The OpenAI API key.
+- `discordUrl`: The Discord webhook URL.
+
+Note that the Secret Manager is created when you run the cdk command.
+The Secret Manager's name is `RealTimeInsightsSecret`.
+
+4. Set up the frontend.
+
+Set the environment variables in the `.env` file under the `/front` directory.
+The environment variables are the above two URLs.
+Then build the frontend using the following command:
+
+```bash
+npm run build
+```
+
+5. Upload the frontend to S3.
+
+Upload the `dist` directory to the S3 bucket created by the CDK.
 
 ## Architecture overview
 
@@ -128,3 +163,4 @@ To do this, webs socket API Gateway is also used.
 Once connection is established, the connection ID is stored in DynamoDB.
 Using this connection ID, the backend can push data to the frontend.
 When the connection is closed, the connection ID is removed from DynamoDB.
+
