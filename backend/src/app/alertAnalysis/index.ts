@@ -7,8 +7,6 @@ import type { AlerterQueueType } from "src/shared/utils/sharedTypes";
  * @param event
  */
 export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
-	const batchItemFailures = [];
-
 	// This queue get only one message at a time.
 	const record = event.Records[0] as unknown as AlerterQueueType;
 
@@ -18,9 +16,11 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 		return { batchItemFailures: [] };
 	} catch (error) {
 		console.error(error);
-		batchItemFailures.push({
-			itemIdentifier: event.Records[0].messageId,
-		});
+		const batchItemFailures = [
+			{
+				itemIdentifier: event.Records[0].messageId,
+			},
+		];
 		return {
 			batchItemFailures,
 		};

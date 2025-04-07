@@ -21,8 +21,6 @@ const alertAnalysisQueue = new AlertAnalysisQueueImplementation(
  * @param event
  */
 export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
-	const batchItemFailures = [];
-
 	const feedbacks = event.Records.map((record) =>
 		JSON.parse(record.body),
 	) as RowFeedback[];
@@ -41,11 +39,9 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 		return { batchItemFailures: [] };
 	} catch (e) {
 		console.log(e);
-		for (const record of event.Records) {
-			batchItemFailures.push({
-				itemIdentifier: record.messageId,
-			});
-		}
+		const batchItemFailures = event.Records.map((record) => ({
+			itemIdentifier: record.messageId,
+		}));
 		return { batchItemFailures: batchItemFailures };
 	}
 };
