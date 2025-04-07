@@ -2,6 +2,7 @@ import type { SQSBatchResponse, SQSEvent } from "aws-lambda";
 import { AlertAnalysisQueueImplementation } from "src/shared/queue/alertAnalysisQueue";
 import { ALERT_ANALYSIS_QUEUE_URL } from "src/shared/utils/environmentVariables";
 import type { RowFeedback } from "src/shared/utils/sharedTypes";
+import {AIAnalysisImplementation} from "src/shared/ai/aiAnalysis";
 
 /**
  * Alert analysis queue client
@@ -9,6 +10,11 @@ import type { RowFeedback } from "src/shared/utils/sharedTypes";
 const alertAnalysisQueue = new AlertAnalysisQueueImplementation(
 	ALERT_ANALYSIS_QUEUE_URL,
 );
+
+/**
+ * AI analysis client
+ */
+const aiAnalysis = new AIAnalysisImplementation();
 
 /**
  * This function is triggered by the SQS queue.
@@ -27,10 +33,10 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 	console.log("full", feedbacks);
 
 	try {
-		for (const record of event.Records) {
-			const body = JSON.parse(record.body);
-			console.log(body);
-		}
+
+		const sentiments = await aiAnalysis.sentimentAnalysis(feedbacks);
+
+		console.log(setImmediate);
 
 		const res = await alertAnalysisQueue.requestAnalysis(new Date(Date.now()));
 
