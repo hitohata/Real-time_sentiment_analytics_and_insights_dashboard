@@ -2,7 +2,6 @@ import type { SQSBatchResponse, SQSEvent } from "aws-lambda";
 import { TimestreamRepositoryImpl } from "src/shared/repository/timestream";
 import type {
 	AlerterQueueType,
-	FeedbackSummary,
 } from "src/shared/utils/sharedTypes";
 
 /**
