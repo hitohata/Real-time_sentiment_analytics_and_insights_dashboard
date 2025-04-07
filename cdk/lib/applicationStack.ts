@@ -286,11 +286,11 @@ export class ApplicationStack extends cdk.Stack {
 		const secret = new cdk.aws_secretsmanager.Secret(this, "Secret", {
 			secretName: "RealTimeInsightsKeys",
 			generateSecretString: {
-        		secretStringTemplate: JSON.stringify({
-					openAiKey: 'dummyKey'
+				secretStringTemplate: JSON.stringify({
+					openAiKey: "dummyKey",
 				}),
-				generateStringKey: 'password',
-      		},
+				generateStringKey: "password",
+			},
 		});
 
 		for (const lambdaFunction of lambdaFunctions) {
