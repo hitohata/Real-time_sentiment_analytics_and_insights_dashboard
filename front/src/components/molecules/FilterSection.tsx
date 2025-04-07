@@ -3,26 +3,28 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/atoms/card";
 import TimeRangeSelector from "@/components/molecules/TimeRangeSelector";
 import SourceFilter from "@/components/molecules/SourceFilter";
-import { FilterState, SourceType } from "@/types/feedback";
+import {FilterState, FilterTimeRange, SourceType} from "@/types/feedback";
 import { Button } from "@/components/atoms/button";
 import { Check } from "lucide-react";
 import { toast } from "sonner";
 
 interface FilterSectionProps {
   filters: FilterState;
-  onTimeChange: (timeRange: { start: Date | null; end: Date | null }) => void;
+  timeRange: FilterTimeRange;
+  onTimeChange: (timeRange: FilterTimeRange) => void;
   onSourceFilterChange: (sources: SourceType[]) => void;
 }
 
 const FilterSection: React.FC<FilterSectionProps> = ({
   filters,
+  timeRange,
   onTimeChange,
   onSourceFilterChange,
 }) => {
   // Local state to track filter changes before applying
   const [localTimeRange, setLocalTimeRange] = useState({
-    start: filters.timeRange.start,
-    end: filters.timeRange.end,
+    start: timeRange.start,
+    end: timeRange.end,
   });
 
   // Handle local changes

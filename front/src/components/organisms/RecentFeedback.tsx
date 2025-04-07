@@ -7,30 +7,8 @@ interface IProps {
 }
 
 export const RecentFeedback = ({ analysisSummaries }: IProps) => {
-    return <FeedbackTable data={generateFeedback(generateMockData())} />
+    return <FeedbackTable data={generateFeedback(analysisSummaries)} />
 }
-
-const generateMockData = (): AnalysisSummaryType[] => {
-	const now = new Date();
-	const data: AnalysisSummaryType[] = [];
-
-	for (let i = 0; i < 10; i++) {
-		const date = new Date(now.getTime() - i * 6 * 60 * 1000); // 6分間隔
-		data.push({
-			timestamp: date.toISOString(),
-			feedbackSource: ["app", "web", "email"][
-				Math.floor(Math.random() * 3)
-			],
-			feedback: "Sample feedback",
-			sentimentLabel: ["positive", "negative", "neutral"][
-				Math.floor(Math.random() * 3)
-			],
-			sentimentScore: Math.random(),
-		});
-	}
-
-	return data;
-};
 
 const generateFeedback = (analysisSummaries: AnalysisSummaryType[]) => {
     const sortedSummaries = analysisSummaries.sort((a, b) => {

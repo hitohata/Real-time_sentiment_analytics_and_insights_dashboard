@@ -5,7 +5,6 @@ import {
 	Command,
 	CommandEmpty,
 	CommandGroup,
-	CommandInput,
 	CommandItem,
 	CommandList,
 	CommandSeparator,
@@ -61,7 +60,6 @@ const SourceFilter = ({
 				</PopoverTrigger>
 				<PopoverContent className="w-52 p-0">
 					<Command>
-						<CommandInput placeholder="Search source..." />
 						<CommandList>
 							<CommandEmpty>No source found.</CommandEmpty>
 							<CommandGroup>

@@ -31,6 +31,7 @@ Before running this command, the test server must have been run.
 
 ## Environment Variable
 
-| Name        | Description     |
-|:------------|:----------------|
-| BACKEND_URL | The backend URL |
+| Name               | Description        |
+|:-------------------|:-------------------|
+| VITE_BACKEND_URL   | The backend URL    | 
+| VITE_WEBSOCKET_URL | The websocket URL  |
