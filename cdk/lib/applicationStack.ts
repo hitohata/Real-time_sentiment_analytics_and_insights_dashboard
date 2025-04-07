@@ -10,13 +10,12 @@ import type { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 
 interface IProps extends cdk.StackProps {
-	timestreamTable: cdk.aws_timestream.CfnTable
+	timestreamTable: cdk.aws_timestream.CfnTable;
 	timestreamDatabaseName: string;
 	timestreamTableName: string;
 }
 
 export class ApplicationStack extends cdk.Stack {
-
 	private readonly timestreamTable: cdk.aws_timestream.CfnTable;
 	private readonly timestreamTableName: string;
 	private readonly timestreamDatabaseName: string;
@@ -71,8 +70,8 @@ export class ApplicationStack extends cdk.Stack {
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
 			environment: {
 				TIMRESTREAM_DATABASE_NAME: this.timestreamDatabaseName,
-				TIMRESTREAM_TABLE_NAME: this.timestreamTableName
-			}
+				TIMRESTREAM_TABLE_NAME: this.timestreamTableName,
+			},
 		});
 	}
 	/**
@@ -92,8 +91,8 @@ export class ApplicationStack extends cdk.Stack {
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
 			environment: {
 				TIMRESTREAM_DATABASE_NAME: this.timestreamDatabaseName,
-				TIMRESTREAM_TABLE_NAME: this.timestreamTableName
-			}
+				TIMRESTREAM_TABLE_NAME: this.timestreamTableName,
+			},
 		});
 	}
 
@@ -110,8 +109,8 @@ export class ApplicationStack extends cdk.Stack {
 			depsLockFilePath: path.join(__dirname, "../../backend/package-lock.json"),
 			environment: {
 				TIMRESTREAM_DATABASE_NAME: this.timestreamDatabaseName,
-				TIMRESTREAM_TABLE_NAME: this.timestreamTableName
-			}
+				TIMRESTREAM_TABLE_NAME: this.timestreamTableName,
+			},
 		});
 	}
 

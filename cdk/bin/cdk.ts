@@ -12,6 +12,6 @@ const dataLayerStack = new DataLayerStack(
 new FrontendStack(app, "RealtimeInsightDashboardStack");
 new ApplicationStack(app, "RealtimeStatementAnalyticsApplicationStack", {
 	timestreamTable: dataLayerStack.timestreamTable,
-	timestreamTableName:  dataLayerStack.timestreamTableName,
+	timestreamTableName: dataLayerStack.timestreamTableName,
 	timestreamDatabaseName: dataLayerStack.timestreamDatabaseName,
 });
