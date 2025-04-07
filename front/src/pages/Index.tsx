@@ -8,7 +8,6 @@ import {
 } from "../components/atoms/card";
 import {
 	FilterState,
-	FeedbackItem,
 	SourceType,
 	AnalysisSummaryType, TrendSuggestionsType,
 } from "@/types/feedback";
@@ -18,97 +17,136 @@ import { RecentFeedback } from "../components/organisms/RecentFeedback";
 import { ActionsTable } from "../components/organisms/ActionsTable";
 import FilterSection from "@/components/molecules/FilterSection";
 import { Alert } from "@/components/organisms/Alert"
+import {getFeedbackSummaries, getFeedbackTrend} from "../api/dashboard";
 
 const Dashboard = () => {
 	// State management
-	const [allFeedback, setAllFeedback] = useState<FeedbackItem[]>([]);
-	const [filteredFeedback, setFilteredFeedback] = useState<FeedbackItem[]>([]);
-	const [lastRefreshTime, setLastRefreshTime] = useState<Date>(new Date());
-	const [isAutoRefreshEnabled, setIsAutoRefreshEnabled] =
-		useState<boolean>(true);
-	const [alerts, setAlerts] = useState<string[]>(["hoge", "fuge", "piyo"]);
+	const [alerts, setAlerts] = useState<string[]>([]);
 	const [filters, setFilters] = useState<FilterState>({
-		timeRange: {
-			start: null,
-			end: null,
-		},
 		sources: ["app", "web", "email"],
-		isCustomTimeRange: false,
 	});
+	const [summaryNextCallTimeoutId, setSummaryNextCallTimeoutId] = useState(null);
+	const [trendNextCallTimeoutId, setTrendNextCallTimeoutId] = useState(null);
 
-	const [analysisSummary, setAnalysisSummary] = useState<AnalysisSummaryType[]>(
-		[],
-	);
-	const [trendSuggestions, setTrendSuggestions] = useState<TrendSuggestionsType>({
-		trend: "positive",
-		suggestions: [
-			{
-				action: "action1",
-				reason: "reason1"
-			},
-			{
-				action: "action2",
-				reason: "reason2"
-			},
-			{
-				action: "action3",
-				reason: "reason3"
-			}
-		]
-	});
+	const [timeRange, setTimeRange] = useState<{from: Date | null, to: Date | null}>({from: null, to: null});
+	const [analysisSummary, setAnalysisSummary] = useState<AnalysisSummaryType[]>([]);
+	const [filteredAnalysisSummaries, setFilteredAnalysisSummaries] = useState<AnalysisSummaryType[]>([]);
+
+	const [trendSuggestions, setTrendSuggestions] = useState<TrendSuggestionsType | null>(null);
 
 	// Initial data load
 	useEffect(() => {
-		loadData();
+		const initialCall = async () => {
+			await Promise.all([loadData(), loadTrend()]);
+			scheduleSummaryCall(10000);
+			scheduleTrendCall(10000);
+		}
+		initialCall();
+		return () => {
+			if (summaryNextCallTimeoutId) {
+				clearTimeout(summaryNextCallTimeoutId);
+			}
+			if (trendNextCallTimeoutId) {
+				clearTimeout(trendNextCallTimeoutId);
+			}
+		}
 	}, []);
 
 	// Apply filters whenever they change
 	useEffect(() => {
 		applyFilters();
-	}, [allFeedback, filters]);
+	}, [analysisSummary, filters]);
+
+	// When the time is selected
+	useEffect(() => {
+		if (timeRange.from && timeRange.to) {
+			getFeedbackSummaries(timeRange.from, timeRange.to).then((result) => {
+				if (result.ok) {
+					setAnalysisSummary(result.value);
+				} else {
+					console.error(result.err)
+				}
+			})
+			getFeedbackTrend(timeRange.from, timeRange.to).then((result) => {
+				if (result.ok) {
+					setTrendSuggestions(result.value);
+				} else {
+					console.error(result.err)
+				}
+			})
+		} else {
+			loadData()
+			loadTrend()
+			scheduleSummaryCall(10000);
+			scheduleTrendCall(10000);
+		}
+	}, [timeRange]);
+
+	const scheduleSummaryCall = (delay: number) => {
+		setSummaryNextCallTimeoutId(
+			setTimeout(async () => {
+				await loadData();
+				scheduleSummaryCall(10000);
+			}, delay)
+		)
+	}
+	const scheduleTrendCall = (delay: number) => {
+		setTrendNextCallTimeoutId(
+			setTimeout(async () => {
+				await loadTrend();
+				scheduleTrendCall(10000);
+			}, delay)
+		)
+	}
 
 	// Loading and refreshing data
-	const loadData = useCallback(() => {
-		// setAllFeedback(generateMockFeedbackData(200));
-		setLastRefreshTime(new Date());
-	}, []);
+	const loadData = async () => {
+		// if time is not set
+		console.log("time range", timeRange)
+		if (!(timeRange.from && timeRange.to)) {
+			getFeedbackSummaries().then((result) => {
+				if (result.ok) {
+					setAnalysisSummary(result.value);
+				} else {
+					console.error(result.err)
+				}
+			})
+		}
+	}
 
-	const handleRefresh = useCallback(() => {
-		loadData();
-	}, [loadData]);
+	const loadTrend = async () => {
+		// if time is not set
+		if (!(timeRange.from && timeRange.to)) {
+			getFeedbackTrend().then((result) => {
+				if (result.ok) {
+					setTrendSuggestions(result.value);
+				} else {
+					console.error(result.err)
+				}
+			})
+		}
+	}
 
 	// Filter management
 	const applyFilters = useCallback(() => {
-		let filtered = [...allFeedback];
+		let filtered = [...analysisSummary];
 
 		// Apply time range filter
-		if (filters.timeRange.start) {
-			filtered = filtered.filter(
-				(item) => new Date(item.timestamp) >= filters.timeRange.start!,
-			);
-		}
-
-		if (filters.timeRange.end) {
-			filtered = filtered.filter(
-				(item) => new Date(item.timestamp) <= filters.timeRange.end!,
-			);
-		}
-
 		// Apply source filter
 		if (filters.sources.length < 3) {
 			filtered = filtered.filter((item) =>
-				filters.sources.includes(item.source),
+				filters.sources.includes(item.feedbackSource),
 			);
 		}
 
-		setFilteredFeedback(filtered);
-	}, [allFeedback, filters]);
+		setFilteredAnalysisSummaries(filtered);
+	}, [analysisSummary, filters]);
 
 	const handleTimeChange = (timeRange: { start: Date | null; end: Date | null }) => {
-		setFilters((prev) => ({
-			...prev,
-			timeRange,
-		}))
+		setTimeRange({
+			from: timeRange.start,
+			to: timeRange.end,
+		})
 	}
 
 	// Source filter handler
@@ -139,6 +177,7 @@ const Dashboard = () => {
 
 		  	<FilterSection
 				filters={filters}
+				timeRange={timeRange}
 				onTimeChange={handleTimeChange}
 				onSourceFilterChange={handleSourceFilterChange}
 		  	/>
@@ -151,7 +190,7 @@ const Dashboard = () => {
 						</div>
 					</CardHeader>
 					<CardContent>
-						<FeedbackVolumeChart analysisSummaries={analysisSummary} />
+						<FeedbackVolumeChart analysisSummaries={filteredAnalysisSummaries} />
 					</CardContent>
 				</Card>
 
@@ -162,19 +201,21 @@ const Dashboard = () => {
 						</div>
 					</CardHeader>
 					<CardContent>
-						<SentimentBarChart analysisSummaries={analysisSummary} />
+						<SentimentBarChart analysisSummaries={filteredAnalysisSummaries} />
 					</CardContent>
 				</Card>
 			</div>
 
-			<Card>
-				<CardHeader>
-					<CardTitle>Top 3 Suggested Actions</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<ActionsTable trendSuggestions={trendSuggestions} />
-				</CardContent>
-			</Card>
+			{ trendSuggestions && (
+				<Card>
+					<CardHeader>
+						<CardTitle>Top 3 Suggested Actions</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<ActionsTable trendSuggestions={trendSuggestions} />
+					</CardContent>
+				</Card>
+			)}
 
 			<Card>
 				<CardHeader>
@@ -186,7 +227,7 @@ const Dashboard = () => {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<RecentFeedback analysisSummaries={ analysisSummary	} />
+					<RecentFeedback analysisSummaries={ filteredAnalysisSummaries } />
 				</CardContent>
 			</Card>
 		</div>

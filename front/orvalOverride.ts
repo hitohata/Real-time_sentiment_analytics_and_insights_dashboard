@@ -9,11 +9,9 @@ const getBody = <T>(c: Response | Request): Promise<T> => {
 };
 
 const getUrl = (contextUrl: string): string => {
-   const url = new URL(contextUrl);
-   const pathname = url.pathname;
-   const search = url.search;
-   const baseUrl = process.env.BACKEND_URL;
-   const requestUrl = new URL(`${baseUrl}${pathname}${search}`);
+   const baseUrl = import.meta.env.VITE_BACKEND_URL;
+   console.log("baseUrl", baseUrl);
+   const requestUrl = new URL(`${baseUrl}${contextUrl}`);
 
    return requestUrl.toString();
  };

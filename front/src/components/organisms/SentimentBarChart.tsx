@@ -7,30 +7,8 @@ interface IProps {
 }
 
 export const SentimentBarChart = ({ analysisSummaries }: IProps) => {
-    return <SourceBreakdownChart data={generateBarChartData(generateMockData())} />
+    return <SourceBreakdownChart data={generateBarChartData(analysisSummaries)} />
 }
-
-const generateMockData = (): AnalysisSummaryType[] => {
-	const now = new Date();
-	const data: AnalysisSummaryType[] = [];
-
-	for (let i = 0; i < 10; i++) {
-		const date = new Date(now.getTime() - i * 6 * 60 * 1000); // 6分間隔
-		data.push({
-			timestamp: date.toISOString(),
-			feedbackSource: ["app", "web", "email"][
-				Math.floor(Math.random() * 3)
-			],
-			feedback: "Sample feedback",
-			sentimentLabel: ["positive", "negative", "neutral"][
-				Math.floor(Math.random() * 3)
-			],
-			sentimentScore: Math.random(),
-		});
-	}
-
-	return data;
-};
 
 const generateBarChartData = (analysisSummaries: AnalysisSummaryType[]): SourceBreakdownItem[] => {
 	const sourceCounts = new Map<

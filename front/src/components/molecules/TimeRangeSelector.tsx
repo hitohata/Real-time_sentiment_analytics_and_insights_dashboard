@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/atoms/popo
 import { Calendar } from "@/components/atoms/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, Clock, RotateCcw } from "lucide-react";
+import { CalendarIcon, Clock } from "lucide-react";
 import { Input } from "@/components/atoms/input";
 
 interface TimeRangeSelectorProps {
@@ -83,12 +83,12 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
               </PopoverContent>
             </Popover>
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <Clock className="h-4 w-5 text-muted-foreground" />
               <Input
                 type="time"
                 value={formatTimeForInput(startDate)}
                 onChange={handleStartTimeChange}
-                className="w-24 h-9 text-xs"
+                className="w-26 h-9 text-xs"
                 disabled={!startDate}
               />
             </div>
@@ -112,18 +112,18 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
                   selected={endDate || undefined}
                   onSelect={onEndDateChange}
                   initialFocus
-                  disabled={date => !startDate || date < startDate}
+                  disabled={!startDate}
                   className={cn("p-3 pointer-events-auto")}
                 />
               </PopoverContent>
             </Popover>
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <Clock className="h-4 w-5 text-muted-foreground" />
               <Input
                 type="time"
                 value={formatTimeForInput(endDate)}
                 onChange={handleEndTimeChange}
-                className="w-24 h-9 text-xs"
+                className="w-26 h-9 text-xs"
                 disabled={!endDate}
               />
             </div>
