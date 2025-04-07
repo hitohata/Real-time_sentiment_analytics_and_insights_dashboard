@@ -156,7 +156,7 @@ const transformRowToSentimentSummary = (rows: Row[]): FeedbackSummary[] => {
 		if (record.length < 5) continue;
 
 		const summary = {
-			timestamp: trensformTimestreamDateToDate(
+			timestamp: transformTimestreamDateToDate(
 				record[1].ScalarValue as string,
 			).toISOString(), // This value is going to be checked by zod
 			feedbackSource: record[0].ScalarValue,
@@ -190,7 +190,7 @@ const feedbackSummarySchema = z.object({
  * The format is `YYYY-MM-DD HH:mm:ss.sssssssss`
  * @param date
  */
-const trensformTimestreamDateToDate = (timestreamDatetime: string): Date => {
+const transformTimestreamDateToDate = (timestreamDatetime: string): Date => {
 	const adjustedString = `${timestreamDatetime.slice(0, 23)}Z`;
 	return new Date(adjustedString);
 };
