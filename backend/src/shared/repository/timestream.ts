@@ -103,7 +103,7 @@ export class TimestreamRepositoryImpl implements ITimestreamRepository {
 				},
 			],
 			MeasureName: "sentiment_data",
-			MeasureValue: MeasureValueType.MULTI,
+			MeasureValueType: MeasureValueType.MULTI,
 			MeasureValues: [
 				{
 					Name: "score",
