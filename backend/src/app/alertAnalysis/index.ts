@@ -6,7 +6,7 @@ import type {
 } from "src/shared/utils/sharedTypes";
 
 /**
- * Timesteam client
+ * Timestream client
  */
 const timestreamRepository = new TimestreamRepositoryImpl();
 
