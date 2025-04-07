@@ -1,12 +1,12 @@
 import type { SQSBatchResponse, SQSEvent } from "aws-lambda";
 import { AIAnalysisImplementation } from "src/shared/ai/aiAnalysis";
 import { AlertAnalysisQueueImplementation } from "src/shared/queue/alertAnalysisQueue";
+import { TimestreamRepositoryImpl } from "src/shared/repository/timestream";
 import { ALERT_ANALYSIS_QUEUE_URL } from "src/shared/utils/environmentVariables";
 import type {
 	FeedbackSentiment,
 	RowFeedback,
 } from "src/shared/utils/sharedTypes";
-import {TimestreamRepositoryImpl} from "src/shared/repository/timestream";
 
 /**
  * Alert analysis queue client
@@ -60,9 +60,7 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 			);
 		}
 
-		await alertAnalysisQueue.requestAnalysis(
-			new Date(latestTimeStamp),
-		);
+		await alertAnalysisQueue.requestAnalysis(new Date(latestTimeStamp));
 
 		return { batchItemFailures: [] };
 	} catch (e) {
