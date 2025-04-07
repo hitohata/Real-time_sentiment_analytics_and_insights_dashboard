@@ -8,27 +8,7 @@ interface IProps {
 }
 
 export const FeedbackVolumeChart = ({ analysisSummaries }: IProps) => {
-	return <TimeSeriesChart data={generateTimeSeriesData(generateMockData())} />;
-};
-
-const generateMockData = (): AnalysisSummaryType[] => {
-	const now = new Date();
-	const data: AnalysisSummaryType[] = [];
-
-	for (let i = 0; i < 10; i++) {
-		const date = new Date(now.getTime() - i * 6 * 60 * 1000); // 6分間隔
-		data.push({
-			timestamp: date.toISOString(),
-			feedbackSource: "App",
-			feedback: "Sample feedback",
-			sentimentLabel: ["positive", "negative", "neutral"][
-				Math.floor(Math.random() * 3)
-			],
-			sentimentScore: Math.random(),
-		});
-	}
-
-	return data;
+	return <TimeSeriesChart data={generateTimeSeriesData(analysisSummaries)} />;
 };
 
 /**

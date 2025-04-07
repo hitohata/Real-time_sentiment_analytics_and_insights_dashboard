@@ -37,12 +37,12 @@ export interface SuggestedAction {
 }
 
 export interface FilterState {
-	timeRange: {
-		start: Date | null;
-		end: Date | null;
-	};
 	sources: SourceType[];
-	isCustomTimeRange: boolean;
+}
+
+export interface FilterTimeRange {
+	start: Date | null;
+	end: Date | null;
 }
 
 /**
@@ -50,7 +50,7 @@ export interface FilterState {
  */
 export type AnalysisSummaryType = {
 	timestamp: string;
-	feedbackSource: string;
+	feedbackSource: "app" | "web" | "email";
 	feedback: string;
 	sentimentLabel: "positive" | "neutral" | "negative";
 	sentimentScore: number;

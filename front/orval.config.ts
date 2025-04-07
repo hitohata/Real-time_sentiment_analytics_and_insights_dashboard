@@ -7,7 +7,7 @@ export default defineConfig({
     },
     output: {
       mode: 'single',
-      target: './src/api/dashboard.ts',
+      target: './src/api/dashboardGen.ts',
       client: 'fetch',
       mock: false,
       override: {
