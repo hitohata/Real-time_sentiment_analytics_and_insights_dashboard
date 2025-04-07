@@ -14,18 +14,13 @@ const timestreamRepository = new TimestreamRepositoryImpl();
  */
 export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 	// This queue get only one message at a time.
-	const record = event.Records[0].body as unknown as AlerterQueueType;
+	const record = JSON.parse(event.Records[0].body) as unknown as AlerterQueueType;
 
 	try {
-
-		console.log("record datetime", record.date);
 
 		// The start point of alert analysis
 		const latestDatetime = new Date(record.date);
 		const fiveMinAgo = new Date(latestDatetime.getTime() - 5 * 60 * 1000);
-
-		console.log("latestDatetime", latestDatetime);
-		console.log("fiveMinAgo", fiveMinAgo);
 
 		const feedbacks = await timestreamRepository.readTimeRange(fiveMinAgo, latestDatetime);
 
