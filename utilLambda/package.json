@@ -1,0 +1,21 @@
+{
+  "name": "util-lambda",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "format": "biome format --write ./src"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/aws-lambda": "^8.10.148",
+    "@types/node": "^22.14.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.782.0",
+    "@aws-sdk/util-dynamodb": "^3.782.0"
+  }
+}
