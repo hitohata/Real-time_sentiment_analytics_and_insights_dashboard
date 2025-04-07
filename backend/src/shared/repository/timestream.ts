@@ -103,7 +103,7 @@ export class TimestreamRepositoryImpl implements ITimestreamRepository {
 				},
 			],
 			MeasureName: "sentiment_data",
-			MeasureValue: MeasureValueType.MULTI,
+			MeasureValueType: MeasureValueType.MULTI,
 			MeasureValues: [
 				{
 					Name: "score",
@@ -168,6 +168,8 @@ const transformRowToSentimentSummary = (rows: Row[]): FeedbackSummary[] => {
 		// check the schema
 		if (feedbackSummarySchema.safeParse(summary).success) {
 			feedbackSummaries.push(summary as FeedbackSummary);
+		} else {
+			console.error("Invalid data", summary);
 		}
 	}
 
@@ -178,11 +180,11 @@ const transformRowToSentimentSummary = (rows: Row[]): FeedbackSummary[] => {
  * the feedback summary schema
  */
 const feedbackSummarySchema = z.object({
-	source: z.string(),
-	time: z.string().datetime(),
+	feedbackSource: z.string(),
+	timestamp: z.string().datetime(),
 	feedback: z.string(),
-	score: z.number().min(-1).max(1),
-	label: z.string(),
+	sentimentScore: z.number().min(-1).max(1),
+	sentimentLabel: z.string(),
 });
 
 /**

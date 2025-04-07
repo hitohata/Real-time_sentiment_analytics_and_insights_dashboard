@@ -1,12 +1,12 @@
 import type { SQSBatchResponse, SQSEvent } from "aws-lambda";
 import { AIAnalysisImplementation } from "src/shared/ai/aiAnalysis";
 import { AlertAnalysisQueueImplementation } from "src/shared/queue/alertAnalysisQueue";
+import { TimestreamRepositoryImpl } from "src/shared/repository/timestream";
 import { ALERT_ANALYSIS_QUEUE_URL } from "src/shared/utils/environmentVariables";
 import type {
 	FeedbackSentiment,
 	RowFeedback,
 } from "src/shared/utils/sharedTypes";
-import { late } from "zod";
 
 /**
  * Alert analysis queue client
@@ -21,11 +21,16 @@ const alertAnalysisQueue = new AlertAnalysisQueueImplementation(
 let aiAnalysis: AIAnalysisImplementation | null = null;
 
 /**
+ * Timesteam client
+ */
+const timestreamRepository = new TimestreamRepositoryImpl();
+
+/**
  * This function is triggered by the SQS queue.
  * This function will do the following:
  * 1. Get the message from the queue
- * 2. Send feedbacks to the AI to analyze the statement
- * 3. Save the analyzed statement to the database
+ * 2. Send feedbacks to the AI to analyze the sentiment
+ * 3. Save the analyzed sentiment to the database
  * 4. Send the latest datetime to the alert analysis queue
  * 5. Delete the message from the queue
  * @param event
@@ -41,7 +46,11 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 			aiAnalysis = await AIAnalysisImplementation.create();
 		}
 
+		// Call AI to analyze the sentiment
 		const sentiments = await aiAnalysis.sentimentAnalysis(feedbacks);
+
+		// Save the analyzed sentiment to the database
+		await timestreamRepository.writeFeedbacks(sentiments);
 
 		const latestTimeStamp = getLatestTimestamp(sentiments);
 
@@ -51,9 +60,7 @@ export const handler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
 			);
 		}
 
-		const res = await alertAnalysisQueue.requestAnalysis(
-			new Date(latestTimeStamp),
-		);
+		await alertAnalysisQueue.requestAnalysis(new Date(latestTimeStamp));
 
 		return { batchItemFailures: [] };
 	} catch (e) {
