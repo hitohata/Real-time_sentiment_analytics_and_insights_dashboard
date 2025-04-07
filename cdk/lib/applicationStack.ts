@@ -70,7 +70,7 @@ export class ApplicationStack extends cdk.Stack {
 		props.websocketGateway.grantManageConnections(alertAnalysisFunction);
 		alertAnalysisFunction.addEnvironment(
 			"WEBSOCKET_ENDPOINT",
-			props.websocketGateway.apiEndpoint,
+			`${props.websocketGateway.apiEndpoint}/prod`,
 		);
 
 		// add permission to read the DynamoDB
@@ -171,6 +171,7 @@ export class ApplicationStack extends cdk.Stack {
 			queueName: "RealTimeSentimentQueue.fifo",
 			visibilityTimeout: cdk.Duration.seconds(60),
 			fifo: true,
+			deliveryDelay: cdk.Duration.seconds(5),
 			contentBasedDeduplication: true,
 		});
 

@@ -22,10 +22,13 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.782.0",
+    "@aws-sdk/client-dynamodb": "^3.782.0",
     "@aws-sdk/client-secrets-manager": "^3.782.0",
     "@aws-sdk/client-sqs": "^3.782.0",
     "@aws-sdk/client-timestream-query": "^3.782.0",
     "@aws-sdk/client-timestream-write": "^3.782.0",
+    "@aws-sdk/util-dynamodb": "^3.782.0",
     "@hono/node-server": "^1.14.0",
     "@hono/swagger-ui": "^0.5.1",
     "@hono/zod-openapi": "^0.19.2",

@@ -32,6 +32,21 @@ export const openAiKey = async (): Promise<string> => {
 };
 
 /**
+ * This is to get Discord URL from Secret Manager
+ */
+export const discordUrl = async (): Promise<string> => {
+	const client = new SecretsManagerClient();
+	const command = new GetSecretValueCommand({
+		SecretId: process.env.SECRET_NAME,
+	});
+
+	const res = await client.send(command);
+
+	// biome-ignore lint/style/noNonNullAssertion: <explanation>
+	return JSON.parse(res.SecretString!).discordUrl;
+};
+
+/**
  * This is OpenAI Key for local development.
  */
 export const OPENAI_API_KEY_MOCK = process.env.OPENAI_API_KEY || "";
@@ -44,4 +59,6 @@ export const TABLE_NAME = process.env.TABLE_NAME || "";
 /**
  * Websocket endpoint
  */
-export const WEBSOCKET_ENDPOINT = process.env.WEBSOCKET_ENDPOINT || "";
+export const WEBSOCKET_ENDPOINT = (
+	process.env.WEBSOCKET_ENDPOINT || ""
+).replace("wss", "https"); // change protocol from wws to https
