@@ -46,14 +46,8 @@ class AnalysisSummaryUseCase
 			return ok(storedFeedback);
 		}
 
-		// get time range
-		const now = new Date(Date.now());
-		const oneHourAgo = new Date(Date.now() - 1000 * 60 * 60); // 1 hour ago
-
-		const storedFeedback = await this.timestreamRepository.readTimeRange(
-			oneHourAgo,
-			now,
-		);
+		// get data of 1 hour
+		const storedFeedback = await this.timestreamRepository.readRecords(60);
 
 		return ok(storedFeedback);
 	}
