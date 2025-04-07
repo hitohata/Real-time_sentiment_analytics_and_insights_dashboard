@@ -164,13 +164,3 @@ Once connection is established, the connection ID is stored in DynamoDB.
 Using this connection ID, the backend can push data to the frontend.
 When the connection is closed, the connection ID is removed from DynamoDB.
 
-## Example
-
-The following is a behavior of this application.
-
-![demo](./mov/demo.webm)
-
-If the negative sentiment is detected, the alert is sent to the Discord channel and dashboard.
-
-![alert](./img/alert.png)
-
