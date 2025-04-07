@@ -54,6 +54,13 @@ export class ApplicationStack extends cdk.Stack {
 		this.addReadTimestreamAuthority([dashboardFunction, alertAnalysisFunction]);
 		// Add a policy to write-only access the Timestream database
 		this.addWriteTimestreamAuthority(sentimentFunction);
+
+		// Add a secret manager for the OpenAI API key
+		this.secretKeyManager([
+			dashboardFunction,
+			sentimentFunction,
+			alertAnalysisFunction,
+		]);
 	}
 
 	/**
@@ -62,7 +69,7 @@ export class ApplicationStack extends cdk.Stack {
 	 */
 	private dashboardFunctionSettings(): NodejsFunction {
 		return new lambdaNodejs.NodejsFunction(this, "DashboardFunction", {
-			functionName: "RealTimeInsightsStatementDashboardFunction",
+			functionName: "RealTimeInsightsSentimentDashboardFunction",
 			runtime: lambda.Runtime.NODEJS_22_X,
 			timeout: cdk.Duration.seconds(10),
 			handler: "handler",
@@ -80,7 +87,7 @@ export class ApplicationStack extends cdk.Stack {
 	 */
 	private sentimentFunctionSettings(): NodejsFunction {
 		return new lambdaNodejs.NodejsFunction(this, "StatementFunction", {
-			functionName: "RealTimeInsightsStatementAnalysisFunction",
+			functionName: "RealTimeInsightsSentimentAnalysisFunction",
 			timeout: cdk.Duration.seconds(30),
 			runtime: lambda.Runtime.NODEJS_22_X,
 			handler: "handler",
@@ -152,6 +159,7 @@ export class ApplicationStack extends cdk.Stack {
 		consumerFunction.addEventSource(
 			new SqsEventSource(sentimentQueue, {
 				batchSize: 10,
+				maxConcurrency: 2,
 				reportBatchItemFailures: true,
 			}),
 		);
@@ -192,6 +200,7 @@ export class ApplicationStack extends cdk.Stack {
 		consumerFunction.addEventSource(
 			new SqsEventSource(alertAnalysisQueue, {
 				batchSize: 1,
+				maxConcurrency: 2,
 				reportBatchItemFailures: true,
 			}),
 		);
@@ -265,5 +274,31 @@ export class ApplicationStack extends cdk.Stack {
 				document: processTimestreamFunctionPolicy,
 			}),
 		);
+	}
+
+	/**
+	 * create a secret manager for the  API keys
+	 * This function also add a permission to the lambda function to access the secret manager
+	 * @private
+	 */
+	private secretKeyManager(lambdaFunctions: NodejsFunction[]) {
+		// secret manager
+		const secret = new cdk.aws_secretsmanager.Secret(this, "Secret", {
+			secretName: "RealTimeInsightsKeys",
+			generateSecretString: {
+        		secretStringTemplate: JSON.stringify({
+					openAiKey: 'dummyKey'
+				}),
+				generateStringKey: 'password',
+      		},
+		});
+
+		for (const lambdaFunction of lambdaFunctions) {
+			// add permission to the lambda function to access the secret manager
+			secret.grantRead(lambdaFunction);
+
+			// add environment variable to the lambda function
+			lambdaFunction.addEnvironment("SECRET_NAME", secret.secretName);
+		}
 	}
 }

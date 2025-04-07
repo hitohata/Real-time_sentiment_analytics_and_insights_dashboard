@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import { OPENAI_MODEL } from "src/shared/utils/constants";
-import { OPENAI_API_KEY } from "src/shared/utils/environmentVariables";
+import {MOCK, OPENAI_API_KEY_MOCK, openAiKey} from "src/shared/utils/environmentVariables";
 import type {
 	FeedbackSentiment,
 	RowFeedback,
@@ -39,10 +39,25 @@ export interface IAIAnalysis {
 export class AIAnalysisImplementation implements IAIAnalysis {
 	private readonly client: OpenAI;
 
-	constructor() {
+	private constructor(apiKey: string) {
+
 		this.client = new OpenAI({
-			apiKey: OPENAI_API_KEY,
+			apiKey,
 		});
+	}
+
+	/**
+	 * This is for construct this class.
+	 * To get key, it requires async function.
+	 * To do so, this is created by static async function.
+	 */
+	static async create(): Promise<AIAnalysisImplementation> {
+		if (MOCK) {
+			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			return new AIAnalysisImplementation(OPENAI_API_KEY_MOCK!);
+		}
+		const key = await openAiKey();
+		return new AIAnalysisImplementation(key);
 	}
 
 	async sentimentAnalysis(

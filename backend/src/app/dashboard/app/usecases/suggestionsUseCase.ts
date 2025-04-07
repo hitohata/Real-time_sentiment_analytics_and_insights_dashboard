@@ -73,7 +73,7 @@ class SuggestionsUseCase
 	}
 }
 
-const generateSuggestionsUseCase = () => {
+const generateSuggestionsUseCase = async () => {
 	if (MOCK) {
 		return new SuggestionsUseCase(
 			new MockTimestreamRepository(),
@@ -82,7 +82,7 @@ const generateSuggestionsUseCase = () => {
 	}
 	return new SuggestionsUseCase(
 		new TimestreamRepositoryImpl(),
-		new AIAnalysisImplementation(),
+		await AIAnalysisImplementation.create(),
 	);
 };
 
