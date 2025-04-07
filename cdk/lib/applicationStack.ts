@@ -171,6 +171,7 @@ export class ApplicationStack extends cdk.Stack {
 			queueName: "RealTimeSentimentQueue.fifo",
 			visibilityTimeout: cdk.Duration.seconds(60),
 			fifo: true,
+			deliveryDelay: cdk.Duration.seconds(5),
 			contentBasedDeduplication: true,
 		});
 

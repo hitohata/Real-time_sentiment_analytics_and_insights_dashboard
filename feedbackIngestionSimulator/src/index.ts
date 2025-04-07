@@ -34,6 +34,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 				Math.floor(Math.random() * positiveFeedbacks.length)
 			],
 		);
+		return
 	}
 
 	// neutral feedback
@@ -41,6 +42,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 		postFeedbackData(
 			neutralFeedbacks[Math.floor(Math.random() * neutralFeedbacks.length)],
 		);
+		return
 	}
 
 	// negative feedback
@@ -50,6 +52,7 @@ function callFeedbackEndpoint(mode: ModeType) {
 				Math.floor(Math.random() * negativeFeedbacks.length)
 			],
 		);
+		return
 	}
 
 	// random feedback "mock"
